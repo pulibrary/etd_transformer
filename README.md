@@ -11,7 +11,13 @@ Download theses from Vireo and transform them for Princeton long-term stewardshi
 rspec spec
 
 ## Processing Vireo Exports
-1. Download vireo exports to a directory
-2. export VIREO_EXPORT_DIRECTORY=/path/to/your/vireo_exports
-3. Make a directory where you want the Data Space import packages written
-4. export DSPACE_IMPORT_DIRECTORY=/path/to/your/dspace_imports
+TBD: insert instructions here
+
+## Object structure
+1. `EtdTransformer` - A top level module to organize things
+1. `EtdTransformer::Vireo` - A module for Vireo classes
+1. `EtdTransformer::DataSpace` - A module for DataSpace classes
+1. `EtdTransformer::Vireo::Submission` - A single thesis, with metadata, as received from Vireo
+1. `EtdTransformer::DataSpace::Submission` - A single thesis, with augmented metadata, ready for submission to DataSpace
+
+![](class_diagram.png)
