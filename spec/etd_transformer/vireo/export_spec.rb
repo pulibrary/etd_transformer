@@ -1,12 +1,10 @@
 # frozen_string_literal: true
 
-require_relative '../lib/vireo_export'
-
-RSpec.describe VireoExport do
-  let(:vireo_export_directory) { "#{__dir__}/fixtures/mock-downloads" }
-  let(:dataspace_import_directory) { "#{__dir__}/fixtures/mock-exports" }
+RSpec.describe EtdTransformer::Vireo::Export do
+  let(:vireo_export_directory) { "#{$fixture_path}/mock-downloads" }
+  let(:dataspace_import_directory) { "#{$fixture_path}/mock-exports" }
   let(:ve_department_name) { 'German' }
-  let(:ve) { VireoExport.new(ve_department_name) }
+  let(:ve) { described_class.new(ve_department_name) }
   let(:ve_asset_directory) { "#{vireo_export_directory}/#{ve_department_name}" }
 
   around do |example|
@@ -20,7 +18,7 @@ RSpec.describe VireoExport do
   end
 
   it 'has a department' do
-    expect(ve).to be_instance_of(VireoExport)
+    expect(ve).to be_instance_of(described_class)
     expect(ve.department_name).to eq 'German'
   end
 
