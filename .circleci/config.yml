@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  ruby: circleci/ruby@0.1.2 
+  ruby: circleci/ruby@0.1.2
 
 jobs:
   build:
@@ -15,4 +15,4 @@ jobs:
       - ruby/bundle-install
       - run:
           name: rspec
-          command: rspec spec
+          command: bundle exec rspec spec
