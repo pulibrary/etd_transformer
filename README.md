@@ -3,6 +3,9 @@
 # vireo_transformation
 Download theses from Vireo and transform them for Princeton long-term stewardship. It takes `VireoExport`s and turns them into `DspaceImport`s.
 
+## Version
+* Ruby 2.6.5
+
 ## Installation
 1. git clone the repository
 2. bundle install
