@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'etd_transformer/vireo/export'
+require 'etd_transformer/vireo/submission'
 
 ##
 # Transform Princeton senior theses (a.k.a. ETDs -- electronic theses and dissertations).
