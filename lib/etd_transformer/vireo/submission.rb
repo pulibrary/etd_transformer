@@ -30,7 +30,7 @@ module EtdTransformer
       ##
       # Create the path to the source files
       def source_files_directory
-        "#{vireo_export_directory}/#{@vireo_export.department_name}/submission_#{@id}"
+        "#{vireo_export_directory}/#{@vireo_export.department_name}/DSpaceSimpleArchive/submission_#{@id}"
       end
 
       def original_pdf

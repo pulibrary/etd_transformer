@@ -45,7 +45,7 @@ RSpec.describe EtdTransformer::Vireo::Submission do
   end
 
   it 'knows what directory its original_pdf should be in' do
-    location = "#{vireo_export_directory}/#{ve_department_name}/submission_#{submission.id}"
+    location = "#{vireo_export_directory}/#{ve_department_name}/DSpaceSimpleArchive/submission_#{submission.id}"
     expect(submission.source_files_directory).to eq location
   end
 
