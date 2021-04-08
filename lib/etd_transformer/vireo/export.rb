@@ -35,6 +35,11 @@ module EtdTransformer
         end
       end
 
+      def unzip_archive
+        zip_file = File.join(vireo_export_directory, @department_name, 'DSpaceSimpleArchive.zip')
+        system("cd #{asset_directory}; unzip #{zip_file}")
+      end
+
       # Directory where the vireo exports are stored
       def vireo_export_directory
         ENV['VIREO_EXPORT_DIRECTORY']

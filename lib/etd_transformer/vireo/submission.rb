@@ -7,10 +7,10 @@ module EtdTransformer
     # single thesis.
     class Submission
       attr_reader :row,
-        :student_id,
-        :student_name,
-        :primary_document,
-        :id
+                  :student_id,
+                  :student_name,
+                  :primary_document,
+                  :id
 
       def initialize(vireo_export:, row:)
         @vireo_export = vireo_export
@@ -35,6 +35,11 @@ module EtdTransformer
 
       def original_pdf
         File.basename(@primary_document)
+      end
+
+      def original_pdf_exists?
+        full_path = File.join(source_files_directory, original_pdf)
+        File.exist?(full_path)
       end
 
       def vireo_export_directory

@@ -49,7 +49,7 @@ RSpec.describe EtdTransformer::Vireo::Submission do
     expect(submission.source_files_directory).to eq location
   end
 
-  xit 'ensures the original pdf document exists' do
+  it 'ensures the original pdf document exists' do
     expect(submission.original_pdf_exists?).to eq true
   end
 end

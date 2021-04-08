@@ -35,6 +35,19 @@ RSpec.describe EtdTransformer::Vireo::Export do
     expect(ve.metadata.rows.count).to eq 8
   end
 
+  context 'initial file setup' do
+    let(:unzipped_path) { File.join(vireo_export_directory, ve_department_name, 'DSpaceSimpleArchive') }
+
+    before do
+      FileUtils.rm_rf(unzipped_path) if Dir.exist? unzipped_path
+    end
+    it 'unzips the file' do
+      expect(Dir.exist?(unzipped_path)).to eq false
+      ve.unzip_archive
+      expect(Dir.exist?(unzipped_path)).to eq true
+    end
+  end
+
   context 'migrating' do
     before do
       FileUtils.rm_rf(Dir["#{dataspace_import_directory}/*"])
