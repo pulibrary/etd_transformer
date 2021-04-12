@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require 'coveralls'
+Coveralls.wear!
+
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 require_relative '../lib/etd_transformer'
 
