@@ -10,12 +10,14 @@ module EtdTransformer
                   :student_id,
                   :student_name,
                   :primary_document,
-                  :id
+                  :id,
+                  :dataspace_submission
 
       def initialize(vireo_export:, row:)
         @vireo_export = vireo_export
         @row = row
         parse_row
+        @dataspace_submission = EtdTransformer::Dataspace::Submission.new(@vireo_export.dataspace_import, @id)
       end
 
       ##
