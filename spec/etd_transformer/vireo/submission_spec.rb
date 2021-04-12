@@ -52,4 +52,8 @@ RSpec.describe EtdTransformer::Vireo::Submission do
   it 'ensures the original pdf document exists' do
     expect(submission.original_pdf_exists?).to eq true
   end
+
+  it 'creates a Dataspace::Submission object' do
+    expect(submission.dataspace_submission).to be_instance_of(EtdTransformer::Dataspace::Submission)
+  end
 end
