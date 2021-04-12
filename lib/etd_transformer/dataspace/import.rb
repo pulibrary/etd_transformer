@@ -16,6 +16,22 @@ module EtdTransformer
       # @param [String] department_name The name of the department.
       def initialize(department_name)
         @department_name = department_name
+        setup_filesystem
+      end
+
+      ##
+      # Directory where files are written. Consists of the DATASPACE_IMPORT_BASE
+      # plus department name.
+      def dataspace_import_directory
+        raise 'Error: DATASPACE_IMPORT_BASE is nil' unless ENV['DATASPACE_IMPORT_BASE']
+
+        File.join(ENV['DATASPACE_IMPORT_BASE'], department_name)
+      end
+
+      ##
+      # Ensure the directory where the Dataspace imports will be written
+      def setup_filesystem
+        FileUtils.mkdir_p(dataspace_import_directory)
       end
     end
   end
