@@ -4,7 +4,7 @@ RSpec.describe EtdTransformer::Vireo::Submission do
   let(:vireo_export_directory) { "#{$fixture_path}/mock-downloads" }
   let(:ve_department_name) { 'German' }
   let(:ve) { EtdTransformer::Vireo::Export.new(ve_department_name) }
-  let(:dataspace_import_directory) { "#{$fixture_path}/mock-exports" }
+  let(:dataspace_import_base) { "#{$fixture_path}/mock-exports" }
   let(:ve_asset_directory) { "#{vireo_export_directory}/#{ve_department_name}" }
   let(:submission) do
     submission = nil
@@ -20,12 +20,12 @@ RSpec.describe EtdTransformer::Vireo::Submission do
 
   around do |example|
     vireo_export_dir_pre_test = ENV['VIREO_EXPORT_DIRECTORY']
-    dataspace_import_dir_pre_test = ENV['DATASPACE_IMPORT_DIRECTORY']
+    dataspace_import_base_pre_test = ENV['DATASPACE_IMPORT_BASE']
     ENV['VIREO_EXPORT_DIRECTORY'] = vireo_export_directory
-    ENV['DATASPACE_IMPORT_DIRECTORY'] = dataspace_import_directory
+    ENV['DATASPACE_IMPORT_BASE'] = dataspace_import_base
     example.run
     ENV['VIREO_EXPORT_DIRECTORY'] = vireo_export_dir_pre_test
-    ENV['DATASPACE_IMPORT_DIRECTORY'] = dataspace_import_dir_pre_test
+    ENV['DATASPACE_IMPORT_BASE'] = dataspace_import_base_pre_test
   end
 
   it 'gets data from a row from Excel' do

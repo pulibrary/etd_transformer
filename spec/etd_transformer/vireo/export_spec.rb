@@ -2,19 +2,19 @@
 
 RSpec.describe EtdTransformer::Vireo::Export do
   let(:vireo_export_directory) { "#{$fixture_path}/mock-downloads" }
-  let(:dataspace_import_directory) { "#{$fixture_path}/mock-exports" }
+  let(:dataspace_import_base) { "#{$fixture_path}/mock-exports" }
   let(:ve_department_name) { 'German' }
   let(:ve) { described_class.new(ve_department_name) }
   let(:ve_asset_directory) { "#{vireo_export_directory}/#{ve_department_name}" }
 
   around do |example|
     vireo_export_dir_pre_test = ENV['VIREO_EXPORT_DIRECTORY']
-    dataspace_import_dir_pre_test = ENV['DATASPACE_IMPORT_DIRECTORY']
+    dataspace_import_base_pre_test = ENV['DATASPACE_IMPORT_BASE']
     ENV['VIREO_EXPORT_DIRECTORY'] = vireo_export_directory
-    ENV['DATASPACE_IMPORT_DIRECTORY'] = dataspace_import_directory
+    ENV['DATASPACE_IMPORT_BASE'] = dataspace_import_base
     example.run
     ENV['VIREO_EXPORT_DIRECTORY'] = vireo_export_dir_pre_test
-    ENV['DATASPACE_IMPORT_DIRECTORY'] = dataspace_import_dir_pre_test
+    ENV['DATASPACE_IMPORT_BASE'] = dataspace_import_base_pre_test
   end
 
   it 'has a department' do
@@ -48,14 +48,17 @@ RSpec.describe EtdTransformer::Vireo::Export do
     end
   end
 
-  context 'migrating' do
+  context 'migrating data' do
     before do
-      FileUtils.rm_rf(Dir["#{dataspace_import_directory}/*"])
+      FileUtils.rm_rf(Dir["#{dataspace_import_base}/*"])
+    end
+    it 'has a corresponding Dataspace::Import object' do
+      expect(ve.dataspace_import).to be_instance_of(EtdTransformer::Dataspace::Import)
     end
     it 'makes a data space submission folder for each vireo submission' do
-      expect(File.directory?("#{dataspace_import_directory}/#{ve_department_name}/Approved")).to eq false
+      expect(File.directory?("#{dataspace_import_base}/#{ve_department_name}")).to eq false
       ve.migrate
-      expect(File.directory?("#{dataspace_import_directory}/#{ve_department_name}/Approved")).to eq true
+      expect(File.directory?("#{dataspace_import_base}/#{ve_department_name}")).to eq true
     end
   end
 end

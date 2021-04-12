@@ -3,18 +3,20 @@
 require 'byebug'
 require 'creek'
 require 'fileutils'
+require 'etd_transformer'
 
 module EtdTransformer
   module Vireo
     # Senior theses as downloaded from Vireo, one department at a time. A Vireo::Export
     # contains a department, a zipfile, and a metadata spreadsheet in Excel.
     class Export
-      attr_reader :department_name
+      attr_reader :department_name, :dataspace_import
 
       ##
       # @param [String] department_name The name of the department. Must match directory name.
       def initialize(department_name)
         @department_name = department_name
+        @dataspace_import = EtdTransformer::Dataspace::Import.new(department_name)
         load_metadata
       end
 
@@ -25,13 +27,11 @@ module EtdTransformer
       # 2. Adding secondary authors
       # 3. Augmenting metadata with secondary academic programs
       def migrate
-        approved_dir = "#{dataspace_import_directory}/#{@department_name}/Approved"
-        FileUtils.mkdir_p approved_dir
         @metadata.simple_rows.each_with_index do |row, index|
           next if index.zero? # skip the header row
           next unless row['Status'] == 'Approved'
 
-          FileUtils.mkdir_p "#{approved_dir}/submission_#{row['ID']}"
+          FileUtils.mkdir_p "#{@dataspace_import.dataspace_import_directory}/submission_#{row['ID']}"
         end
       end
 
