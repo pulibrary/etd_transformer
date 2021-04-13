@@ -1,5 +1,14 @@
 # frozen_string_literal: true
 
+require 'coveralls'
+require 'simplecov'
+Coveralls.wear!
+
+SimpleCov.start do
+  # Don't measure coverage of the tests themselves.
+  add_filter '/spec/'
+end
+
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 require_relative '../lib/etd_transformer'
 
