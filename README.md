@@ -1,4 +1,5 @@
 [![CircleCI](https://circleci.com/gh/pulibrary/vireo_transformation.svg?style=shield)](https://circleci.com/gh/pulibrary/vireo_transformation)
+[![Coverage Status](https://coveralls.io/repos/github/pulibrary/vireo_transformation/badge.svg)](https://coveralls.io/github/pulibrary/vireo_transformation)
 
 # vireo_transformation
 Download theses from Vireo and transform them for Princeton long-term stewardship. It takes `VireoExport`s and turns them into `DspaceImport`s.
