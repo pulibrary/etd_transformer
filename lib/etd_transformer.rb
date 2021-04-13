@@ -10,4 +10,7 @@ require 'etd_transformer/dataspace/submission'
 # Take the thesis as received from Vireo and augment it so that it can be ingested for
 # long term stewardship.
 module EtdTransformer
+  # ROOT = File.dirname __dir__
+  autoload(:Vireo, File.join(__FILE__, 'vireo'))
+  autoload(:Dataspace, File.join(__FILE__, 'dataspace'))
 end
