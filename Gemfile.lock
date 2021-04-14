@@ -102,6 +102,7 @@ DEPENDENCIES
   coveralls
   creek
   rspec (~> 3.0)
+  thor
 
 BUNDLED WITH
    1.17.3
