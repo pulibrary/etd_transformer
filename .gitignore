@@ -2,3 +2,5 @@
 .byebug_history
 spec/fixtures/mock-downloads/
 coverage/
+doc/
+.yardoc
