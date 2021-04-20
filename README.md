@@ -15,7 +15,13 @@ Download theses from Vireo and transform them for Princeton long-term stewardshi
 rspec spec
 
 ## Processing Vireo Exports
-TBD: insert instructions here
+We use a thor command line interface. You will need to specify an input directory that contains
+Vireo exports for a single department or program, and an empty output directory.
+Example:
+
+```
+thor etd_transformer:cli:process --input spec/fixtures/mock-downloads/German --output /tmp/2021_theses
+```
 
 ## Object structure
 1. `EtdTransformer` - A top level module to organize things
