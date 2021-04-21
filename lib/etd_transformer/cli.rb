@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'byebug'
 require 'thor'
 
 module EtdTransformer
@@ -14,7 +13,7 @@ module EtdTransformer
       if all_required_options_present?
         puts "Processing directory #{options[:input]}."
         puts "Output will be written to #{options[:output]}"
-        # EtdTransformer::Vireo::Export.migrate(options[:input])
+        EtdTransformer::Transformer.transform(options)
       else
         output_help_message
       end

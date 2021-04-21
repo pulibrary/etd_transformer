@@ -10,49 +10,19 @@ module EtdTransformer
     # Senior theses as downloaded from Vireo, one department at a time. A Vireo::Export
     # contains a department, a zipfile, and a metadata spreadsheet in Excel.
     class Export
-      attr_reader :department_name, :dataspace_import
+      attr_reader :department_name, :asset_directory
 
       ##
-      # @param [String] department_name The name of the department. Must match directory name.
-      def initialize(department_name)
-        @department_name = department_name
-        @dataspace_import = EtdTransformer::Dataspace::Import.new(department_name)
+      # @param [String] Full path to the input directory. Last directory must be a department name.
+      def initialize(input)
+        @asset_directory = input
+        @department_name = input.split('/').last
         load_metadata
       end
 
-      ##
-      # Migrate the contents of a Vireo export directory (which will contain the
-      # theses of a single department). This will include:
-      # 1. Adding a cover page to the PDF
-      # 2. Adding secondary authors
-      # 3. Augmenting metadata with secondary academic programs
-      def migrate
-        @metadata.simple_rows.each_with_index do |row, index|
-          next if index.zero? # skip the header row
-          next unless row['Status'] == 'Approved'
-
-          FileUtils.mkdir_p "#{@dataspace_import.dataspace_import_directory}/submission_#{row['ID']}"
-        end
-      end
-
       def unzip_archive
-        zip_file = File.join(vireo_export_directory, @department_name, 'DSpaceSimpleArchive.zip')
-        system("cd #{asset_directory}; unzip #{zip_file}")
-      end
-
-      # Directory where the vireo exports are stored
-      def vireo_export_directory
-        ENV['VIREO_EXPORT_DIRECTORY']
-      end
-
-      # Directory where the assets for this VireoExport are stored
-      def asset_directory
-        "#{vireo_export_directory}/#{@department_name}"
-      end
-
-      # Directory where the transformed theses are written
-      def dataspace_import_directory
-        ENV['DATASPACE_IMPORT_DIRECTORY']
+        zip_file = File.join(@asset_directory, 'DSpaceSimpleArchive.zip')
+        system("cd #{@asset_directory}; unzip #{zip_file}")
       end
 
       # The metadata as received from Vireo
@@ -62,7 +32,7 @@ module EtdTransformer
       end
 
       def metadata_file
-        "#{asset_directory}/ExcelExport.xlsx"
+        "#{@asset_directory}/ExcelExport.xlsx"
       end
 
       ##
