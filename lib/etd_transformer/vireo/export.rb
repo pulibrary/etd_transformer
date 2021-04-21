@@ -45,6 +45,28 @@ module EtdTransformer
         @metadata = m
         m
       end
+
+      ##
+      # List of all approved submissions
+      # @return [Hash]
+      def approved_submissions
+        @approved_submissions ||= generate_approved_submissions
+      end
+
+      ##
+      # Create an EtdTransformer::Vireo::Submission object for each approved row in the spreadsheet.
+      # Be able to find a given Vireo::Submission by its id.
+      # @return [Hash]
+      def generate_approved_submissions
+        @approved_submissions = {}
+        @metadata.simple_rows.each_with_index do |row, index|
+          next if index.zero? # skip the header row
+          next unless row['Status'] == 'Approved'
+
+          @approved_submissions[row['ID']] = EtdTransformer::Vireo::Submission.new(asset_directory: @asset_directory, row: row)
+        end
+        @approved_submissions
+      end
     end
   end
 end

@@ -4,3 +4,4 @@ spec/fixtures/mock-downloads/
 coverage/
 doc/
 .yardoc
+spec/fixtures/exports

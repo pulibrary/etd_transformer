@@ -11,10 +11,11 @@ module EtdTransformer
                   :student_name,
                   :primary_document,
                   :id,
-                  :dataspace_submission
+                  :dataspace_submission,
+                  :asset_directory
 
-      def initialize(vireo_export:, row:)
-        @vireo_export = vireo_export
+      def initialize(asset_directory:, row:)
+        @asset_directory = asset_directory
         @row = row
         parse_row
       end
@@ -31,7 +32,7 @@ module EtdTransformer
       ##
       # Create the path to the source files
       def source_files_directory
-        "#{@vireo_export.asset_directory}/DSpaceSimpleArchive/submission_#{@id}"
+        "#{@asset_directory}/DSpaceSimpleArchive/submission_#{@id}"
       end
 
       def original_pdf
@@ -39,12 +40,11 @@ module EtdTransformer
       end
 
       def original_pdf_exists?
-        full_path = File.join(source_files_directory, original_pdf)
-        File.exist?(full_path)
+        File.exist?(original_pdf_full_path)
       end
 
-      def asset_directory
-        @vireo_export.asset_directory
+      def original_pdf_full_path
+        File.join(source_files_directory, original_pdf)
       end
     end
   end

@@ -28,15 +28,13 @@ require_relative '../lib/etd_transformer'
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
-  config.before(:all) { $fixture_path = "#{__dir__}/fixtures" }
-
   ##
   # Unpack the test fixtures before running tests. We keep these zipped because they
   # contain real data and we do not want it spidered by search engines.
   config.before(:all) do
-    fixture_dir = "#{__dir__}/fixtures"
-    zipped_fixtures = "#{fixture_dir}/mock-downloads.tar.gz"
-    system("cd #{fixture_dir}; tar zxf #{zipped_fixtures}")
+    $fixture_path = "#{__dir__}/fixtures"
+    zipped_fixtures = "#{$fixture_path}/mock-downloads.tar.gz"
+    system("cd #{$fixture_path}; tar zxf #{zipped_fixtures}")
   end
 
   # rspec-expectations config goes here. You can use an alternate

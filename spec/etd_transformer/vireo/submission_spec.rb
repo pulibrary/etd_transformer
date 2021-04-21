@@ -11,7 +11,7 @@ RSpec.describe EtdTransformer::Vireo::Submission do
       next if index.zero? # skip the header row
       next unless row['Status'] == 'Approved'
 
-      submission = described_class.new(vireo_export: ve, row: row)
+      submission = described_class.new(asset_directory: ve.asset_directory, row: row)
       break
     end
     submission
@@ -40,5 +40,10 @@ RSpec.describe EtdTransformer::Vireo::Submission do
 
   it 'ensures the original pdf document exists' do
     expect(submission.original_pdf_exists?).to eq true
+  end
+
+  it 'knows the full path of the original_pdf' do
+    full_path = "#{ve.asset_directory}/DSpaceSimpleArchive/submission_8234/CHEON-JANICE-THESIS.pdf"
+    expect(submission.original_pdf_full_path).to eq full_path
   end
 end
