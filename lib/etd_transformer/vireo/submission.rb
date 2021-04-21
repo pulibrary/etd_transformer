@@ -17,7 +17,6 @@ module EtdTransformer
         @vireo_export = vireo_export
         @row = row
         parse_row
-        @dataspace_submission = EtdTransformer::Dataspace::Submission.new(@vireo_export.dataspace_import, @id)
       end
 
       ##
@@ -32,7 +31,7 @@ module EtdTransformer
       ##
       # Create the path to the source files
       def source_files_directory
-        "#{vireo_export_directory}/#{@vireo_export.department_name}/DSpaceSimpleArchive/submission_#{@id}"
+        "#{@vireo_export.asset_directory}/DSpaceSimpleArchive/submission_#{@id}"
       end
 
       def original_pdf
@@ -44,8 +43,8 @@ module EtdTransformer
         File.exist?(full_path)
       end
 
-      def vireo_export_directory
-        @vireo_export.vireo_export_directory
+      def asset_directory
+        @vireo_export.asset_directory
       end
     end
   end

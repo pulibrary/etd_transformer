@@ -5,6 +5,7 @@ require 'etd_transformer/vireo/submission'
 require 'etd_transformer/dataspace/import'
 require 'etd_transformer/dataspace/submission'
 require 'etd_transformer/cli'
+require 'etd_transformer/transformer'
 
 ##
 # Transform Princeton senior theses (a.k.a. ETDs -- electronic theses and dissertations).
