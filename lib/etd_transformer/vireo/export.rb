@@ -22,7 +22,7 @@ module EtdTransformer
 
       def unzip_archive
         zip_file = File.join(@asset_directory, 'DSpaceSimpleArchive.zip')
-        system("cd #{@asset_directory}; unzip #{zip_file}")
+        system("cd #{@asset_directory}; unzip -q -u #{zip_file}")
       end
 
       # The metadata as received from Vireo
