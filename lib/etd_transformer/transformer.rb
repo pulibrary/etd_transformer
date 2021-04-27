@@ -33,6 +33,8 @@ module EtdTransformer
     # Orchestrate the transformation of a Vireo::Export
     def transform
       dataspace_submissions.each do |ds|
+        copy_license_file(ds)
+        process_pdf(ds)
         puts ds.id
       end
     end
