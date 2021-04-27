@@ -4,7 +4,7 @@ Layout/LineLength:
   Max: 135
 
 Metrics/BlockLength:
-  Max: 75
+  Max: 100
 
 Style/GlobalVars:
   Exclude:

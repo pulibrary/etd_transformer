@@ -56,6 +56,16 @@ module EtdTransformer
     end
 
     ##
+    # Copy LICENSE.txt file from vireo submission to dataspace submission
+    def copy_license_file(dataspace_submission)
+      vs = @vireo_export.approved_submissions[dataspace_submission.id]
+      license_filename = 'LICENSE.txt'
+      original_license = File.join(vs.source_files_directory, license_filename)
+      destination_path = File.join(dataspace_submission.directory_path, license_filename)
+      `cp #{original_license} #{destination_path}`
+    end
+
+    ##
     # Full path to the thesis cover page
     def cover_page_full_path
       File.expand_path(File.join(File.dirname(__FILE__), '..', 'assets', 'SeniorThesisCoverPage.pdf'))
