@@ -7,6 +7,9 @@ Download theses from Vireo and transform them for Princeton long-term stewardshi
 ## Version
 * Ruby 2.6.5
 
+## Pre-requisites
+* ghostscript, for processing PDFs
+
 ## Installation
 1. git clone the repository
 2. bundle install

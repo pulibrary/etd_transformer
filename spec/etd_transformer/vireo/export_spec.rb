@@ -32,4 +32,11 @@ RSpec.describe EtdTransformer::Vireo::Export do
       expect(Dir.exist?(unzipped_path)).to eq true
     end
   end
+
+  context 'submissions' do
+    it 'has a hash of approved submissions accessible by id' do
+      expect(ve.approved_submissions).to be_instance_of(Hash)
+      expect(ve.approved_submissions['8658']).to be_instance_of(EtdTransformer::Vireo::Submission)
+    end
+  end
 end

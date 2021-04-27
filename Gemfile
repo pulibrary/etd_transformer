@@ -5,6 +5,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 gem 'coveralls', require: false
 gem 'creek'
+gem 'pdf-reader'
 gem 'rake'
 gem 'thor'
 gem 'yard'

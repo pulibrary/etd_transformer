@@ -9,6 +9,8 @@ jobs:
     executor: ruby/default
     steps:
       - checkout
+      - run: sudo apt-get update
+      - run: sudo apt-get install ghostscript
       - run:
           name: Which bundler?
           command: bundle -v
