@@ -60,16 +60,16 @@ RSpec.describe EtdTransformer::Transformer do
     end
   end
 
-  context 'prepping a PDF' do
+  context 'transforming a thesis' do
     let(:unzipped_path) { File.join(transformer.input_dir, 'DSpaceSimpleArchive') }
     let(:ds) { transformer.dataspace_submissions.first }
+    let(:vs) { transformer.vireo_export.approved_submissions[ds.id] }
 
     before do
       FileUtils.rm_rf(unzipped_path) if Dir.exist? unzipped_path
       transformer.vireo_export.unzip_archive
     end
     it 'copies the PDF and adds a cover page' do
-      vs = transformer.vireo_export.approved_submissions[ds.id]
       original_number_of_pages = PDF::Reader.new(vs.original_pdf_full_path).page_count
       destination_path = File.join(ds.directory_path, vs.original_pdf)
       expect(File.exist?(destination_path)).to eq false
@@ -78,6 +78,13 @@ RSpec.describe EtdTransformer::Transformer do
       post_processing_number_of_pages = PDF::Reader.new(destination_path).page_count
       # page count of the PDF should increase by one (the cover page)
       expect(original_number_of_pages + 1).to eq post_processing_number_of_pages
+    end
+
+    it 'copies the license file' do
+      destination_path = File.join(ds.directory_path, 'LICENSE.txt')
+      expect(File.exist?(destination_path)).to eq false
+      transformer.copy_license_file(ds)
+      expect(File.exist?(destination_path)).to eq true
     end
   end
 end

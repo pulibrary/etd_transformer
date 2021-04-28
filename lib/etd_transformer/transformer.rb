@@ -33,6 +33,8 @@ module EtdTransformer
     # Orchestrate the transformation of a Vireo::Export
     def transform
       dataspace_submissions.each do |ds|
+        copy_license_file(ds)
+        process_pdf(ds)
         puts ds.id
       end
     end
@@ -53,6 +55,16 @@ module EtdTransformer
         FileUtils.mkdir_p dataspace_submission.directory_path
       end
       @dataspace_submissions
+    end
+
+    ##
+    # Copy LICENSE.txt file from vireo submission to dataspace submission
+    def copy_license_file(dataspace_submission)
+      vs = @vireo_export.approved_submissions[dataspace_submission.id]
+      license_filename = 'LICENSE.txt'
+      original_license = File.join(vs.source_files_directory, license_filename)
+      destination_path = File.join(dataspace_submission.directory_path, license_filename)
+      `cp #{original_license} #{destination_path}`
     end
 
     ##
