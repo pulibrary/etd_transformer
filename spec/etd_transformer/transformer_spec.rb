@@ -66,7 +66,6 @@ RSpec.describe EtdTransformer::Transformer do
     let(:vs) { transformer.vireo_export.approved_submissions[ds.id] }
 
     before do
-      FileUtils.rm_rf(unzipped_path) if Dir.exist? unzipped_path
       transformer.vireo_export.unzip_archive
     end
     it 'copies the PDF and adds a cover page' do
