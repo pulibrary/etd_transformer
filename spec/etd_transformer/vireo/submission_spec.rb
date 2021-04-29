@@ -51,5 +51,13 @@ RSpec.describe EtdTransformer::Vireo::Submission do
     it 'has a classyear' do
       expect(submission.classyear).to eq '2020'
     end
+    it 'has an authorid' do
+      expect(submission.authorid).to eq '961251996'
+    end
+    context 'department' do
+      it 'provides the department if this is a Home Department Thesis' do
+        expect(submission.department).to eq 'German'
+      end
+    end
   end
 end
