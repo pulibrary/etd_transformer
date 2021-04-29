@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'Date'
-
 module EtdTransformer
   module Vireo
     ##
