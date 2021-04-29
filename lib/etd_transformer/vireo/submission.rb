@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'Date'
+
 module EtdTransformer
   module Vireo
     ##
@@ -27,6 +29,7 @@ module EtdTransformer
         @student_name = @row['Student name']
         @primary_document = @row['Primary document']
         @id = @row['ID']
+        @approval_date = @row['Approval date']
       end
 
       ##
@@ -45,6 +48,15 @@ module EtdTransformer
 
       def original_pdf_full_path
         File.join(source_files_directory, original_pdf)
+      end
+
+      ##
+      # What year should this thesis be recorded under?
+      # Note that embargos will be calculated from July 1 of classyear + embargo length
+      def classyear
+        string_date = @approval_date.split(' ').first
+        parsed_date = Date.strptime(string_date, "%m/%d/%Y")
+        parsed_date.year.to_s
       end
     end
   end

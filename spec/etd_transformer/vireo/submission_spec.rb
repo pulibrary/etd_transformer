@@ -46,4 +46,10 @@ RSpec.describe EtdTransformer::Vireo::Submission do
     full_path = "#{ve.asset_directory}/DSpaceSimpleArchive/submission_8234/CHEON-JANICE-THESIS.pdf"
     expect(submission.original_pdf_full_path).to eq full_path
   end
+
+  context 'metadata_pu fields' do
+    it 'has a classyear' do
+      expect(submission.classyear).to eq '2020'
+    end
+  end
 end
