@@ -13,3 +13,6 @@ Metrics/MethodLength:
 Style/GlobalVars:
   Exclude:
     - spec/**/*
+
+Style/StringLiterals:
+  Enabled: false

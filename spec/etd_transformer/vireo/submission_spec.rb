@@ -5,16 +5,26 @@ RSpec.describe EtdTransformer::Vireo::Submission do
   let(:ve_department_name) { 'German' }
   let(:ve) { EtdTransformer::Vireo::Export.new(input_dir) }
   let(:export_dir) { "#{$fixture_path}/exports" }
-  let(:submission) do
-    submission = nil
-    ve.metadata.simple_rows.each_with_index do |row, index|
-      next if index.zero? # skip the header row
-      next unless row['Status'] == 'Approved'
-
-      submission = described_class.new(asset_directory: ve.asset_directory, row: row)
-      break
-    end
-    submission
+  let(:submission) { described_class.new(asset_directory: ve.asset_directory, row: row) }
+  let(:row) do
+    {
+      "Student ID" => "961251996",
+      "Student name" => "Cheon, Janice",
+      "Language" => "en",
+      "Status" => "Approved",
+      "Approval date" => "05/18/2020 07:52",
+      "Certificate Program" => "Medieval Studies Program",
+      "Thesis Type" => "Home Department Thesis",
+      "Multi Author" => "no",
+      "Last Event Time" => "05/18/2020 07:52",
+      "Submission date" => "05/08/2020 17:12",
+      "Advisors" => "Fore, Devin",
+      "ID" => "8234",
+      "Title" => "“Against the Malaise of Time”: Embodied Fragmentation and the Temporalities of the Dada Creaturely, 1919-1937",
+      "Student email" => "student@example.edu",
+      "Primary document" => "http://thesis-central.princeton.edu//submit/review/1584978277IgrBDmmfiXo/8297/CHEON-JANICE-THESIS.pdf",
+      "Department" => "German"
+    }
   end
 
   it 'gets data from a row from Excel' do
