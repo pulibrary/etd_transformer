@@ -68,6 +68,19 @@ RSpec.describe EtdTransformer::Vireo::Submission do
       it 'provides the department if this is a Home Department Thesis' do
         expect(submission.department).to eq 'German'
       end
+      context 'vireo munged department names' do
+        let(:row) do
+          {
+            "Student name" => "Toast, Jane",
+            "Status" => "Approved",
+            "Thesis Type" => "Home Department Thesis",
+            "Department" => "Engr & Food (Fake)"
+          }
+        end
+        it 'adjusts the department name' do
+          expect(submission.department).to eq 'Engineering and Food'
+        end
+      end
     end
   end
 end

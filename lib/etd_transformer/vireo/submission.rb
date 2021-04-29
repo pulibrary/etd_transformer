@@ -20,10 +20,6 @@ module EtdTransformer
         parse_row
       end
 
-      def vireo_export_department_name
-        @asset_directory.split('/').last
-      end
-
       ##
       # Pull data out of the Excel row and assign it to instance variables for ease of access.
       def parse_row
@@ -74,10 +70,21 @@ module EtdTransformer
       end
 
       ##
+      # Get the department name from the spreadsheet row. Adjust as needed to adhere
+      # to Princeton formatting rules.
+      def adjusted_department_name
+        dept_from_spreadsheet = @row['Department']
+        dept_from_spreadsheet = dept_from_spreadsheet.split('(').first
+        dept_from_spreadsheet = dept_from_spreadsheet.gsub('&', 'and')
+        dept_from_spreadsheet = dept_from_spreadsheet.gsub('Engr', 'Engineering')
+        dept_from_spreadsheet.strip
+      end
+
+      ##
       # If the 'Thesis Type' column in the spreadsheet reads 'Home Department Thesis',
       # then the department value is the same as the vireo export department value
       def department
-        vireo_export_department_name if home_department_thesis?
+        adjusted_department_name if home_department_thesis?
       end
     end
   end
