@@ -20,6 +20,10 @@ module EtdTransformer
         parse_row
       end
 
+      def vireo_export_department_name
+        @asset_directory.split('/').last
+      end
+
       ##
       # Pull data out of the Excel row and assign it to instance variables for ease of access.
       def parse_row
@@ -27,6 +31,8 @@ module EtdTransformer
         @student_name = @row['Student name']
         @primary_document = @row['Primary document']
         @id = @row['ID']
+        @approval_date = @row['Approval date']
+        @thesis_type = @row['Thesis Type']
       end
 
       ##
@@ -45,6 +51,33 @@ module EtdTransformer
 
       def original_pdf_full_path
         File.join(source_files_directory, original_pdf)
+      end
+
+      ##
+      # What year should this thesis be recorded under?
+      # Note that embargos will be calculated from July 1 of classyear + embargo length
+      def classyear
+        string_date = @approval_date.split(' ').first
+        parsed_date = Date.strptime(string_date, '%m/%d/%Y')
+        parsed_date.year.to_s
+      end
+
+      ##
+      # The same number is called a "Student ID" in some places and "authorid" in
+      # other places, so make sure both terms work.
+      def authorid
+        @student_id
+      end
+
+      def home_department_thesis?
+        return true if @thesis_type == 'Home Department Thesis'
+      end
+
+      ##
+      # If the 'Thesis Type' column in the spreadsheet reads 'Home Department Thesis',
+      # then the department value is the same as the vireo export department value
+      def department
+        vireo_export_department_name if home_department_thesis?
       end
     end
   end
