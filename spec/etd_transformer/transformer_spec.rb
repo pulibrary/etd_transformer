@@ -6,7 +6,8 @@ RSpec.describe EtdTransformer::Transformer do
   let(:input_dir) { "#{$fixture_path}/mock-downloads/#{department_name}" }
   let(:department_name) { 'German' }
   let(:output_dir) { "#{$fixture_path}/exports" }
-  let(:options) { { input: input_dir, output: output_dir } }
+  let(:embargo_spreadsheet) { "#{$fixture_path}/mock-downloads/embargo_spreadsheet_with_netids.xlsx" }
+  let(:options) { { input: input_dir, output: output_dir, embargo_spreadsheet: embargo_spreadsheet } }
   let(:transformer) { described_class.new(options) }
 
   before do
@@ -92,6 +93,15 @@ RSpec.describe EtdTransformer::Transformer do
       expect(File.exist?(destination_path)).to eq false
       transformer.generate_metadata_pu(vs, ds)
       expect(File.exist?(destination_path)).to eq true
+    end
+  end
+
+  context 'embargoes' do
+    it "has an embargo spreadsheet" do
+      expect(transformer.embargo_spreadsheet).to eq embargo_spreadsheet
+    end
+    it "looks up an embargo length based on netid" do
+      expect(transformer.embargo_length('jcheon')).to eq 5
     end
   end
 end

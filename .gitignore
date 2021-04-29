@@ -5,3 +5,4 @@ coverage/
 doc/
 .yardoc
 spec/fixtures/exports
+spec/fixtures/cli_invoked
