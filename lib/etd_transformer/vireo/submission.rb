@@ -55,7 +55,7 @@ module EtdTransformer
       # Note that embargos will be calculated from July 1 of classyear + embargo length
       def classyear
         string_date = @approval_date.split(' ').first
-        parsed_date = Date.strptime(string_date, "%m/%d/%Y")
+        parsed_date = Date.strptime(string_date, '%m/%d/%Y')
         parsed_date.year.to_s
       end
     end
