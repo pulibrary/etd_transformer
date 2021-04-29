@@ -83,5 +83,16 @@ module EtdTransformer
       destination_path = File.join(dataspace_submission.directory_path, vs.original_pdf)
       `gs -q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile=#{destination_path} #{cover_page_full_path} #{original_pdf_full_path}`
     end
+
+    ##
+    # Take metadata from a Vireo::Submission and feed it to a Dataspace::Submission
+    # for use in generating the metadata_pu.xml file
+    def generate_metadata_pu(vireo_submission, dataspace_submission)
+      dataspace_submission.classyear = vireo_submission.classyear
+      dataspace_submission.authorid = vireo_submission.authorid
+      dataspace_submission.department = vireo_submission.department
+      dataspace_submission.certificate_programs = vireo_submission.certificate_programs
+      dataspace_submission.write_metadata_pu
+    end
   end
 end

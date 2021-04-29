@@ -12,16 +12,13 @@ module EtdTransformer
                   :primary_document,
                   :id,
                   :dataspace_submission,
-                  :asset_directory
+                  :asset_directory,
+                  :certificate_programs
 
       def initialize(asset_directory:, row:)
         @asset_directory = asset_directory
         @row = row
         parse_row
-      end
-
-      def vireo_export_department_name
-        @asset_directory.split('/').last
       end
 
       ##
@@ -33,6 +30,7 @@ module EtdTransformer
         @id = @row['ID']
         @approval_date = @row['Approval date']
         @thesis_type = @row['Thesis Type']
+        @certificate_programs = [] << @row['Certificate Program']
       end
 
       ##
@@ -74,10 +72,21 @@ module EtdTransformer
       end
 
       ##
+      # Get the department name from the spreadsheet row. Adjust as needed to adhere
+      # to Princeton formatting rules.
+      def adjusted_department_name
+        dept_from_spreadsheet = @row['Department']
+        dept_from_spreadsheet = dept_from_spreadsheet.split('(').first
+        dept_from_spreadsheet = dept_from_spreadsheet.gsub('&', 'and')
+        dept_from_spreadsheet = dept_from_spreadsheet.gsub('Engr', 'Engineering')
+        dept_from_spreadsheet.strip
+      end
+
+      ##
       # If the 'Thesis Type' column in the spreadsheet reads 'Home Department Thesis',
       # then the department value is the same as the vireo export department value
       def department
-        vireo_export_department_name if home_department_thesis?
+        adjusted_department_name if home_department_thesis?
       end
     end
   end
