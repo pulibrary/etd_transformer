@@ -81,6 +81,23 @@ RSpec.describe EtdTransformer::Vireo::Submission do
           expect(submission.department).to eq 'Engineering and Food'
         end
       end
+      context 'certificate programs' do
+        context 'when there is one certificate program' do
+          let(:row) do
+            {
+              "Student name" => "Toast, Jane",
+              "Status" => "Approved",
+              "Certificate Program" => "Latin American Studies Program"
+            }
+          end
+          it 'returns an array with a single value' do
+            expect(submission.certificate_programs).to eq ["Latin American Studies Program"]
+          end
+        end
+        # See https://github.com/pulibrary/vireo_transformation/issues/16
+        xcontext 'when there are multiple certificate programs' do
+        end
+      end
     end
   end
 end

@@ -86,5 +86,12 @@ RSpec.describe EtdTransformer::Transformer do
       transformer.copy_license_file(ds)
       expect(File.exist?(destination_path)).to eq true
     end
+
+    it 'generates the metadata_pu' do
+      destination_path = File.join(ds.directory_path, 'metadata_pu.xml')
+      expect(File.exist?(destination_path)).to eq false
+      transformer.generate_metadata_pu(vs, ds)
+      expect(File.exist?(destination_path)).to eq true
+    end
   end
 end
