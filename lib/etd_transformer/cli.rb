@@ -13,6 +13,7 @@ module EtdTransformer
       if all_required_options_present?
         puts "Processing directory #{options[:input]}."
         puts "Output will be written to #{options[:output]}"
+        puts "Using embargo spreadsheet #{options[:embargo_spreadsheet]}"
         EtdTransformer::Transformer.transform(options)
       else
         output_help_message
@@ -29,7 +30,7 @@ module EtdTransformer
       end
 
       def all_required_options_present?
-        true if options[:input] && options[:output]
+        true if options[:input] && options[:output] && options[:embargo_spreadsheet]
       end
     end
   end
