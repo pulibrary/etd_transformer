@@ -21,7 +21,7 @@ RSpec.describe EtdTransformer::Vireo::Submission do
       "Advisors" => "Fore, Devin",
       "ID" => "8234",
       "Title" => "“Against the Malaise of Time”: Embodied Fragmentation and the Temporalities of the Dada Creaturely, 1919-1937",
-      "Student email" => "student@example.edu",
+      "Student email" => "jcheon@princeton.edu",
       "Primary document" => "http://thesis-central.princeton.edu//submit/review/1584978277IgrBDmmfiXo/8297/CHEON-JANICE-THESIS.pdf",
       "Department" => "German"
     }
@@ -55,6 +55,10 @@ RSpec.describe EtdTransformer::Vireo::Submission do
   it 'knows the full path of the original_pdf' do
     full_path = "#{ve.asset_directory}/DSpaceSimpleArchive/submission_8234/CHEON-JANICE-THESIS.pdf"
     expect(submission.original_pdf_full_path).to eq full_path
+  end
+
+  it 'has a netid extrapolated from email address' do
+    expect(submission.netid).to eq 'jcheon'
   end
 
   context 'metadata_pu fields' do

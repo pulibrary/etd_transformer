@@ -88,12 +88,14 @@ RSpec.describe EtdTransformer::Transformer do
       transformer.copy_license_file(ds)
       expect(File.exist?(destination_path)).to eq true
     end
-
-    it 'generates the metadata_pu' do
-      destination_path = File.join(ds.directory_path, 'metadata_pu.xml')
-      expect(File.exist?(destination_path)).to eq false
-      transformer.generate_metadata_pu(vs, ds)
-      expect(File.exist?(destination_path)).to eq true
+    context 'metadata' do
+      let(:department_name) { 'German' }
+      it 'generates the metadata_pu' do
+        destination_path = File.join(ds.directory_path, 'metadata_pu.xml')
+        expect(File.exist?(destination_path)).to eq false
+        transformer.generate_metadata_pu(vs, ds)
+        expect(File.exist?(destination_path)).to eq true
+      end
     end
   end
 
@@ -103,6 +105,12 @@ RSpec.describe EtdTransformer::Transformer do
     end
     it "looks up an embargo length based on netid" do
       expect(transformer.embargo_length('jcheon')).to eq 5
+    end
+  end
+
+  context 'mudd walkin status' do
+    it "looks up mudd walkin status based on netid" do
+      expect(transformer.walk_in_access('jcheon')).to eq 'Yes'
     end
   end
 end
