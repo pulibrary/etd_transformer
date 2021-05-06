@@ -105,4 +105,10 @@ RSpec.describe EtdTransformer::Transformer do
       expect(transformer.embargo_length('jcheon')).to eq 5
     end
   end
+
+  context 'mudd walkin status' do
+    it "looks up mudd walkin status based on netid" do
+      expect(transformer.walk_in_access('jcheon')).to eq 'Yes'
+    end
+  end
 end

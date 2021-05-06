@@ -31,6 +31,8 @@ module EtdTransformer
       @department = @input_dir.split('/').last
       @vireo_export = EtdTransformer::Vireo::Export.new(@input_dir)
       @dataspace_import = EtdTransformer::Dataspace::Import.new(@output_dir, @department)
+      @embargo_data = {}
+      @walk_in_data = {}
     end
 
     ##
@@ -108,26 +110,28 @@ module EtdTransformer
     def load_embargo_data
       creek = Creek::Book.new @embargo_spreadsheet, with_headers: true
       m = creek.sheets[0]
-      embargoes = {}
       m.simple_rows.each_with_index do |row, index|
         next if index.zero? # skip the header row
 
-        netid = row["Submitted By"].split("|").last
-        embargo_years = row["Embargo Years"]
-        embargoes[netid] = embargo_years
+        netid = row["Submitted By"].split("|").last.split("\\").last
+        @embargo_data[netid] = row["Embargo Years"]
+        @walk_in_data[netid] = row["Walk In Access"]
       end
-      embargoes
     end
 
-    def embargo_data
-      @embargo_data ||= load_embargo_data
+    ##
+    # There is a column in the embargo spreadsheet called Walk in Access
+    def walk_in_access(netid)
+      load_embargo_data if @walk_in_data.empty?
+      @walk_in_data[netid]
     end
 
     ##
     # Given a netid, look up the embargo length
     # This will return 0 if embargo length is N/A or empty
     def embargo_length(netid)
-      embargo_data[netid].to_i
+      load_embargo_data if @embargo_data.empty?
+      @embargo_data[netid].to_i
     end
   end
 end
