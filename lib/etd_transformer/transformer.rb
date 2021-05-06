@@ -4,7 +4,7 @@ module EtdTransformer
   ##
   # Orchestrate the transformation of a Vireo export into something else
   class Transformer
-    attr_reader :input_dir, :output_dir, :department, :vireo_export, :dataspace_import
+    attr_reader :input_dir, :output_dir, :department, :vireo_export, :dataspace_import, :embargo_spreadsheet
 
     ##
     # Convenience method for kicking off a transformation.
@@ -24,6 +24,7 @@ module EtdTransformer
     def initialize(options)
       @input_dir = options[:input]
       @output_dir = options[:output]
+      @embargo_spreadsheet = options[:embargo_spreadsheet]
       @department = @input_dir.split('/').last
       @vireo_export = EtdTransformer::Vireo::Export.new(@input_dir)
       @dataspace_import = EtdTransformer::Dataspace::Import.new(@output_dir, @department)
@@ -35,6 +36,8 @@ module EtdTransformer
       dataspace_submissions.each do |ds|
         copy_license_file(ds)
         process_pdf(ds)
+        vs = @vireo_export.approved_submissions[ds.id]
+        generate_metadata_pu(vs, ds)
         puts ds.id
       end
     end
@@ -93,6 +96,35 @@ module EtdTransformer
       dataspace_submission.department = vireo_submission.department
       dataspace_submission.certificate_programs = vireo_submission.certificate_programs
       dataspace_submission.write_metadata_pu
+    end
+
+    ##
+    # Load the embargo spreadsheet into memory. We use https://github.com/pythonicrubyist/creek
+    # to read data from an excel spreadsheet.
+    # @return [Hash]
+    def load_embargo_data
+      creek = Creek::Book.new @embargo_spreadsheet, with_headers: true
+      m = creek.sheets[0]
+      embargoes = {}
+      m.simple_rows.each_with_index do |row, index|
+        next if index.zero? # skip the header row
+
+        netid = row["Submitted By"].split("|").last
+        embargo_years = row["Embargo Years"]
+        embargoes[netid] = embargo_years
+      end
+      embargoes
+    end
+
+    def embargo_data
+      @embargo_data ||= load_embargo_data
+    end
+
+    ##
+    # Given a netid, look up the embargo length
+    # This will return 0 if embargo length is N/A or empty
+    def embargo_length(netid)
+      embargo_data[netid].to_i
     end
   end
 end

@@ -7,7 +7,7 @@ module EtdTransformer
     # A single thesis, post-processing, ready for import into DataSpace
     class Submission
       attr_reader :dataspace_import, :id
-      attr_accessor :authorid, :classyear, :department, :certificate_programs
+      attr_accessor :authorid, :classyear, :department, :certificate_programs, :embargo_length
 
       def initialize(dataspace_import, id)
         @dataspace_import = dataspace_import
@@ -45,6 +45,11 @@ module EtdTransformer
             xml.dcvalue(element: 'department') do
               xml.text @department
             end
+            if embargo_terms
+              xml.dcvalue(element: 'embargo.terms') do
+                xml.text embargo_terms
+              end
+            end
             @certificate_programs.each do |cp|
               xml.dcvalue(element: 'certificate') do
                 xml.text cp
@@ -57,6 +62,15 @@ module EtdTransformer
 
       def metadata_pu_path
         File.join(directory_path, 'metadata_pu.xml')
+      end
+
+      ##
+      # The embargo release date is 1 July of the classyear plus the embargo length
+      def embargo_terms
+        return false unless @embargo_length
+
+        year = @classyear + @embargo_length
+        "#{year}-07-01"
       end
 
       ##

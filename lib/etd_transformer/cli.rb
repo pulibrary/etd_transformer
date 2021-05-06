@@ -8,6 +8,7 @@ module EtdTransformer
   class Cli < Thor
     option :input, desc: 'Full path to input files', alias: 'i'
     option :output, desc: 'Full path to output', alias: 'o'
+    option :embargo_spreadsheet, desc: 'Full path to embargo spreadsheet', alias: 'e'
     desc 'process', 'Process vireo ETDs into DataSpace ETDs'
     def process
       if all_required_options_present?

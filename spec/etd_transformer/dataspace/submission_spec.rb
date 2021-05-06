@@ -65,5 +65,12 @@ RSpec.describe EtdTransformer::Dataspace::Submission do
       cert_program_names = cert_programs_in_metadata_pu.map(&:text)
       expect(cert_program_names).to eq cert_programs
     end
+    it 'writes the embargo' do
+      ds.classyear = 2000
+      ds.embargo_length = 5
+      expect(ds.embargo_terms).to eq '2005-07-01'
+      embargo_terms_in_metadata_pu = ds.metadata_pu.doc.xpath('//dcvalue[@element="embargo.terms"]').text
+      expect(embargo_terms_in_metadata_pu).to eq '2005-07-01'
+    end
   end
 end
