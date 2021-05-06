@@ -22,14 +22,31 @@ RSpec.describe EtdTransformer::Vireo::Export do
 
   context 'initial file setup' do
     let(:unzipped_path) { File.join(input, 'DSpaceSimpleArchive') }
-
     before do
       FileUtils.rm_rf(unzipped_path) if Dir.exist? unzipped_path
     end
-    it 'unzips the file' do
-      expect(Dir.exist?(unzipped_path)).to eq false
-      ve.unzip_archive
-      expect(Dir.exist?(unzipped_path)).to eq true
+    context 'without spaces in the path' do
+      it 'unzips the file' do
+        expect(Dir.exist?(unzipped_path)).to eq false
+        ve.unzip_archive
+        expect(Dir.exist?(unzipped_path)).to eq true
+      end
+    end
+    context 'with spaces in the path' do
+      let(:input) { "#{$fixture_path}/mock-downloads/African American Studies" }
+      it 'unzips the file' do
+        expect(Dir.exist?(unzipped_path)).to eq false
+        ve.unzip_archive
+        expect(Dir.exist?(unzipped_path)).to eq true
+      end
+    end
+    context 'with escaped spaces in the path' do
+      let(:input) { "#{$fixture_path}/mock-downloads/African\ American\ Studies" }
+      it 'unzips the file' do
+        expect(Dir.exist?(unzipped_path)).to eq false
+        ve.unzip_archive
+        expect(Dir.exist?(unzipped_path)).to eq true
+      end
     end
   end
 

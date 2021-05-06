@@ -117,6 +117,7 @@ DEPENDENCIES
   pdf-reader
   rake
   rspec (~> 3.0)
+  rubyzip
   thor
   yard
 

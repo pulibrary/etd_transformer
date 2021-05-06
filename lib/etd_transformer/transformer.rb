@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require 'shellwords'
+require 'fileutils'
+
 module EtdTransformer
   ##
   # Orchestrate the transformation of a Vireo export into something else
@@ -67,7 +70,7 @@ module EtdTransformer
       license_filename = 'LICENSE.txt'
       original_license = File.join(vs.source_files_directory, license_filename)
       destination_path = File.join(dataspace_submission.directory_path, license_filename)
-      `cp #{original_license} #{destination_path}`
+      FileUtils.cp(original_license, destination_path)
     end
 
     ##
@@ -84,7 +87,7 @@ module EtdTransformer
       vs = @vireo_export.approved_submissions[dataspace_submission.id]
       original_pdf_full_path = vs.original_pdf_full_path
       destination_path = File.join(dataspace_submission.directory_path, vs.original_pdf)
-      `gs -q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile=#{destination_path} #{cover_page_full_path} #{original_pdf_full_path}`
+      `gs -q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile=#{Shellwords.shellescape(destination_path)} #{cover_page_full_path} #{Shellwords.shellescape(original_pdf_full_path)}`
     end
 
     ##

@@ -62,6 +62,7 @@ RSpec.describe EtdTransformer::Transformer do
   end
 
   context 'transforming a thesis' do
+    let(:department_name) { 'African American Studies' }
     let(:unzipped_path) { File.join(transformer.input_dir, 'DSpaceSimpleArchive') }
     let(:ds) { transformer.dataspace_submissions.first }
     let(:vs) { transformer.vireo_export.approved_submissions[ds.id] }

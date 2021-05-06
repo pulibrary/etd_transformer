@@ -47,6 +47,8 @@ module EtdTransformer
         File.exist?(original_pdf_full_path)
       end
 
+      ##
+      # The full path to the original PDF.
       def original_pdf_full_path
         File.join(source_files_directory, original_pdf)
       end
