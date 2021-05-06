@@ -7,6 +7,7 @@ gem 'coveralls', require: false
 gem 'creek'
 gem 'pdf-reader'
 gem 'rake'
+gem 'rubyzip'
 gem 'thor'
 gem 'yard'
 

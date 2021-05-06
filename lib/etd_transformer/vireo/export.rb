@@ -4,6 +4,8 @@ require 'byebug'
 require 'creek'
 require 'fileutils'
 require 'etd_transformer'
+require 'shellwords'
+require 'zip'
 
 module EtdTransformer
   module Vireo
@@ -17,12 +19,17 @@ module EtdTransformer
       def initialize(input)
         @asset_directory = input
         @department_name = input.split('/').last
+        unzip_archive
         load_metadata
       end
 
+      ##
+      # Unzip the DSpaceSimpleArchive.zip file for each department
       def unzip_archive
         zip_file = File.join(@asset_directory, 'DSpaceSimpleArchive.zip')
-        system("cd #{@asset_directory}; unzip -q -u #{zip_file}")
+        raise "Zip file #{zip_file} does not exist" unless File.exist?(zip_file)
+
+        extract_zip(zip_file, @asset_directory)
       end
 
       # The metadata as received from Vireo
@@ -66,6 +73,20 @@ module EtdTransformer
           @approved_submissions[row['ID']] = EtdTransformer::Vireo::Submission.new(asset_directory: @asset_directory, row: row)
         end
         @approved_submissions
+      end
+
+      ##
+      # Given a zipfile and a destination directory, unzip the zipfile into the destination directory
+      def extract_zip(file, destination)
+        FileUtils.mkdir_p(destination)
+
+        Zip::File.open(file) do |zip_file|
+          zip_file.each do |f|
+            fpath = File.join(destination, f.name)
+            FileUtils.mkdir_p(File.dirname(fpath))
+            zip_file.extract(f, fpath) unless File.exist?(fpath)
+          end
+        end
       end
     end
   end
