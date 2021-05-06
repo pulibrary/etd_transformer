@@ -31,6 +31,7 @@ module EtdTransformer
         @approval_date = @row['Approval date']
         @thesis_type = @row['Thesis Type']
         @certificate_programs = [] << @row['Certificate Program']
+        @student_email = @row['Student email']
       end
 
       ##
@@ -51,6 +52,10 @@ module EtdTransformer
       # The full path to the original PDF.
       def original_pdf_full_path
         File.join(source_files_directory, original_pdf)
+      end
+
+      def netid
+        @student_email.split('@').first
       end
 
       ##

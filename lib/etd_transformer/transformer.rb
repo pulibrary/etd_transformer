@@ -100,6 +100,8 @@ module EtdTransformer
       dataspace_submission.authorid = vireo_submission.authorid
       dataspace_submission.department = vireo_submission.department
       dataspace_submission.certificate_programs = vireo_submission.certificate_programs
+      dataspace_submission.mudd_walkin = walk_in_access(vireo_submission.netid)
+      dataspace_submission.embargo_length = embargo_length(vireo_submission.netid)
       dataspace_submission.write_metadata_pu
     end
 
