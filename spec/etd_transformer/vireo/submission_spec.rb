@@ -61,6 +61,13 @@ RSpec.describe EtdTransformer::Vireo::Submission do
     expect(submission.netid).to eq 'jcheon'
   end
 
+  context 'dublin core metadata' do
+    it 'knows the location of the original dublin_core.xml file' do
+      file_path = "#{ve.asset_directory}/DSpaceSimpleArchive/submission_8234/dublin_core.xml"
+      expect(submission.dublin_core_file_path).to eq file_path
+    end
+  end
+
   context 'metadata_pu fields' do
     it 'has a classyear' do
       expect(submission.classyear).to eq '2020'

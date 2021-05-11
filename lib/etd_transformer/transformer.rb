@@ -106,6 +106,14 @@ module EtdTransformer
     end
 
     ##
+    # Take the dublin_core.xml file as provided by vireo, augment it, and add it
+    # to the DataSpace import package
+    def generate_dublin_core(vireo_submission, dataspace_submission)
+      dc_original = vireo_submission.dublin_core_file_path
+      dataspace_submission.write_dublin_core(dc_original, walk_in_access(vireo_submission.netid))
+    end
+
+    ##
     # Load the embargo spreadsheet into memory. We use https://github.com/pythonicrubyist/creek
     # to read data from an excel spreadsheet.
     # @return [Hash]

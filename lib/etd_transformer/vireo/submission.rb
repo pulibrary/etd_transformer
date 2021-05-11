@@ -54,6 +54,12 @@ module EtdTransformer
         File.join(source_files_directory, original_pdf)
       end
 
+      ##
+      # The full path to the original dublin_core.xml file
+      def dublin_core_file_path
+        File.join(source_files_directory, 'dublin_core.xml')
+      end
+
       def netid
         @student_email.split('@').first
       end
