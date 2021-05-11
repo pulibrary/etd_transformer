@@ -96,6 +96,12 @@ RSpec.describe EtdTransformer::Transformer do
         transformer.generate_metadata_pu(vs, ds)
         expect(File.exist?(destination_path)).to eq true
       end
+      it 'copies the dublin core metadata' do
+        destination_path = File.join(ds.directory_path, 'dublin_core.xml')
+        expect(File.exist?(destination_path)).to eq false
+        transformer.generate_dublin_core(vs, ds)
+        expect(File.exist?(destination_path)).to eq true
+      end
     end
   end
 

@@ -19,6 +19,33 @@ RSpec.describe EtdTransformer::Dataspace::Submission do
     expect(ds.directory_path).to eq "#{di.output_dir}/#{di_department_name}/submission_#{ds.id}"
   end
 
+  context 'dublin_core.xml' do
+    let(:original_dc_file) { "#{$fixture_path}/mock-downloads/German/DSpaceSimpleArchive/submission_8234/dublin_core.xml" }
+    let(:expected_dc_file) { File.join(ds.directory_path, 'dublin_core.xml') }
+    before do
+      FileUtils.rm_rf(expected_dc_file) if File.exist? expected_dc_file
+    end
+    it 'writes a dublin core metadata file to the expected location' do
+      expect(File.exist?(expected_dc_file)).to eq false
+      ds.write_dublin_core(original_dc_file, "Yes")
+      expect(File.exist?(expected_dc_file)).to eq true
+    end
+    it 'augments the dublin core if Mudd access is Yes' do
+      doc = File.open(original_dc_file) { |f| Nokogiri::XML(f) }
+      expect(doc.xpath('//rights.accessRights').text).to eq ''
+      ds.write_dublin_core(original_dc_file, "Yes")
+      postdoc = File.open(expected_dc_file) { |f| Nokogiri::XML(f) }
+      expect(postdoc.xpath('//rights.accessRights').text).to match(/Mudd/)
+    end
+    it 'does NOT augment the dublin core if Mudd access is No' do
+      doc = File.open(original_dc_file) { |f| Nokogiri::XML(f) }
+      expect(doc.xpath('//rights.accessRights').text).to eq ''
+      ds.write_dublin_core(original_dc_file, "No")
+      postdoc = File.open(expected_dc_file) { |f| Nokogiri::XML(f) }
+      expect(postdoc.xpath('//rights.accessRights').text).to eq ''
+    end
+  end
+
   # <dublin_core encoding="utf-8" schema="pu">
   #   <dcvalue element="date" qualifier="classyear">2020</dcvalue>
   #   <dcvalue element="contributor" qualifier="authorid">961152882</dcvalue>

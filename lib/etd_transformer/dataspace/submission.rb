@@ -9,6 +9,9 @@ module EtdTransformer
       attr_reader :dataspace_import, :id
       attr_accessor :authorid, :classyear, :department, :certificate_programs, :embargo_length, :mudd_walkin
 
+      WALKIN_MESSAGE = 'Walk-in Access. This thesis can only be viewed on computer
+      terminals at the <a href=http://mudd.princeton.edu>Mudd Manuscript Library</a>.'
+
       def initialize(dataspace_import, id)
         @dataspace_import = dataspace_import
         @id = id
@@ -18,6 +21,21 @@ module EtdTransformer
 
       def directory_path
         File.join(@dataspace_import.dataspace_import_directory, "submission_#{@id}")
+      end
+
+      ##
+      # Take the original dublin_core.xml file and augment it with the Mudd walkin
+      # data as indicated. Write it to the expected place.
+      # @param [String] original_dc_file full path to the original dublin_core.xml file
+      # @param [String] mudd_walkin "Yes" or "No"
+      def write_dublin_core(original_dc_file, mudd_walkin)
+        doc = File.open(original_dc_file) { |f| Nokogiri::XML(f) }
+        if mudd_walkin.downcase == 'yes'
+          rights = Nokogiri::XML::Node.new "rights.accessRights", doc
+          rights.content = WALKIN_MESSAGE
+          doc.root.add_child(rights)
+        end
+        File.write(dublin_core_file_path, doc.to_xml)
       end
 
       ##
@@ -67,6 +85,10 @@ module EtdTransformer
 
       def metadata_pu_path
         File.join(directory_path, 'metadata_pu.xml')
+      end
+
+      def dublin_core_file_path
+        File.join(directory_path, 'dublin_core.xml')
       end
 
       ##
