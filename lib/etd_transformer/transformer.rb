@@ -105,7 +105,7 @@ module EtdTransformer
       dataspace_submission.authorid = vireo_submission.authorid
       dataspace_submission.department = vireo_submission.department
       dataspace_submission.certificate_programs = vireo_submission.certificate_programs
-      dataspace_submission.mudd_walkin = walk_in_access(vireo_submission.netid)
+      dataspace_submission.mudd_walkin = walk_in_access(vireo_submission.netid, vireo_submission.title)
       dataspace_submission.embargo_length = embargo_length(vireo_submission.netid, vireo_submission.title)
       dataspace_submission.write_metadata_pu
     end
@@ -115,7 +115,7 @@ module EtdTransformer
     # to the DataSpace import package
     def generate_dublin_core(vireo_submission, dataspace_submission)
       dc_original = vireo_submission.dublin_core_file_path
-      dataspace_submission.write_dublin_core(dc_original, walk_in_access(vireo_submission.netid))
+      dataspace_submission.write_dublin_core(dc_original, walk_in_access(vireo_submission.netid, vireo_submission.title))
     end
 
     ##
@@ -128,20 +128,20 @@ module EtdTransformer
       m.simple_rows.each_with_index do |row, index|
         next if index.zero? # skip the header row
 
-        netid = row["Submitted By"].split("|").last.split("\\").last
-        years_and_title = {}
-        years_and_title["years"] = row["Embargo Years"]
-        years_and_title["title"] = row["Name"]
-        @embargo_data[netid] = years_and_title
-        @walk_in_data[netid] = row["Walk In Access"]
+        edp = EmbargoDataPoint.new(row)
+        @embargo_data[edp.netid] = [] if @embargo_data[edp.netid].nil?
+        @embargo_data[edp.netid] << edp
       end
     end
 
     ##
-    # There is a column in the embargo spreadsheet called Walk in Access
-    def walk_in_access(netid)
-      load_embargo_data if @walk_in_data.empty?
-      @walk_in_data[netid]
+    # Given a netid and a title, look up the walk in access value
+    def walk_in_access(netid, title)
+      load_embargo_data if @embargo_data.empty?
+      @embargo_data[netid].each do |edp|
+        return edp.walk_in_access if match?(title, edp.title)
+      end
+      'No'
     end
 
     ##
@@ -156,7 +156,7 @@ module EtdTransformer
     ##
     # Given two normalized titles, is the Levenshtein distance within configured parameters?
     def match?(title1, title2)
-      distance = DidYouMean::Levenshtein.distance(title1, title2)
+      distance = DidYouMean::Levenshtein.distance(normalize_title(title1), normalize_title(title2))
       distance < TITLE_MATCH_THRESHOLD
     end
 
@@ -167,8 +167,9 @@ module EtdTransformer
     # This will return 0 if embargo length is N/A or empty
     def embargo_length(netid, title)
       load_embargo_data if @embargo_data.empty?
-      normalized_title_from_embargo_spreadsheet = normalize_title(@embargo_data[netid]['title'])
-      return @embargo_data[netid]["years"].to_i if match?(normalize_title(title), normalized_title_from_embargo_spreadsheet)
+      @embargo_data[netid].each do |edp|
+        return edp.years.to_i if match?(title, edp.title)
+      end
 
       0
     end

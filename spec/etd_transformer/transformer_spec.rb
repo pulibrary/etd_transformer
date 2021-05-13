@@ -140,8 +140,10 @@ RSpec.describe EtdTransformer::Transformer do
   end
 
   context 'mudd walkin status' do
-    it "looks up mudd walkin status based on netid" do
-      expect(transformer.walk_in_access('jcheon')).to eq 'Yes'
+    let(:ds) { transformer.dataspace_submissions.first }
+    let(:vs) { transformer.vireo_export.approved_submissions[ds.id] }
+    it "looks up mudd walkin status based on netid and title" do
+      expect(transformer.walk_in_access(vs.netid, vs.title)).to eq 'Yes'
     end
   end
 end
