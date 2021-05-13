@@ -13,7 +13,8 @@ module EtdTransformer
                   :id,
                   :dataspace_submission,
                   :asset_directory,
-                  :certificate_programs
+                  :certificate_programs,
+                  :title
 
       def initialize(asset_directory:, row:)
         @asset_directory = asset_directory
@@ -32,6 +33,7 @@ module EtdTransformer
         @thesis_type = @row['Thesis Type']
         @certificate_programs = [] << @row['Certificate Program']
         @student_email = @row['Student email']
+        @title = @row['Title']
       end
 
       ##

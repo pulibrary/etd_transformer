@@ -105,12 +105,37 @@ RSpec.describe EtdTransformer::Transformer do
     end
   end
 
+  # The titles as written in the embargo spreadsheet contain extra data that will
+  # make them harder to match on. They need cleaning.
+  context 'title matching' do
+    it 'eliminates capitalization, punctuation, and extra data' do
+      original_title = '“THE WAY OUT”_ A Contemporary Portrait of 1.5 and Second Generation Immigrants from New York City’s  - Sanna Lee.xml'
+      normalized_title = 'the way out a contemporary portrait of 15 and second generation immigrants from new york citys'
+      expect(transformer.normalize_title(original_title)).to eq normalized_title
+    end
+    it 'determines whether two strings match using Levenshtein distance' do
+      title1 = "against the malaise of time embodied fragmentation and the temporalities of the dada creaturely 19191937"
+      title2 = "against the malaise of time embodied fragmentation and the temporalities of the dada creaturely"
+      expect(transformer.match?(title1, title2)).to eq true
+      title2 = "a totally different title"
+      expect(transformer.match?(title1, title2)).to eq false
+    end
+  end
+
   context 'embargoes' do
+    let(:ds) { transformer.dataspace_submissions.first }
+    let(:vs) { transformer.vireo_export.approved_submissions[ds.id] }
+
     it "has an embargo spreadsheet" do
       expect(transformer.embargo_spreadsheet).to eq embargo_spreadsheet
     end
-    it "looks up an embargo length based on netid" do
-      expect(transformer.embargo_length('jcheon')).to eq 5
+    context 'embargo length' do
+      it "matches on both netid and title" do
+        expect(transformer.embargo_length(vs.netid, vs.title)).to eq 5
+      end
+      it "does NOT match if only the netid, but not the title, match" do
+        expect(transformer.embargo_length('sofieg', 'this is a fake title')).to eq 0
+      end
     end
   end
 

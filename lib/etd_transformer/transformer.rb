@@ -1,13 +1,18 @@
 # frozen_string_literal: true
 
-require 'shellwords'
 require 'fileutils'
+require 'shellwords'
 
 module EtdTransformer
   ##
   # Orchestrate the transformation of a Vireo export into something else
   class Transformer
     attr_reader :input_dir, :output_dir, :department, :vireo_export, :dataspace_import, :embargo_spreadsheet
+
+    # How close must two titles be to each other, in terms of Levenshtein distance,
+    # in order for us to consider them a match?
+    # https://en.wikipedia.org/wiki/Levenshtein_distance
+    TITLE_MATCH_THRESHOLD = 10
 
     ##
     # Convenience method for kicking off a transformation.
@@ -101,7 +106,7 @@ module EtdTransformer
       dataspace_submission.department = vireo_submission.department
       dataspace_submission.certificate_programs = vireo_submission.certificate_programs
       dataspace_submission.mudd_walkin = walk_in_access(vireo_submission.netid)
-      dataspace_submission.embargo_length = embargo_length(vireo_submission.netid)
+      dataspace_submission.embargo_length = embargo_length(vireo_submission.netid, vireo_submission.title)
       dataspace_submission.write_metadata_pu
     end
 
@@ -124,7 +129,10 @@ module EtdTransformer
         next if index.zero? # skip the header row
 
         netid = row["Submitted By"].split("|").last.split("\\").last
-        @embargo_data[netid] = row["Embargo Years"]
+        years_and_title = {}
+        years_and_title["years"] = row["Embargo Years"]
+        years_and_title["title"] = row["Name"]
+        @embargo_data[netid] = years_and_title
         @walk_in_data[netid] = row["Walk In Access"]
       end
     end
@@ -137,11 +145,32 @@ module EtdTransformer
     end
 
     ##
-    # Given a netid, look up the embargo length
+    # The titles contain extra data that will make them harder to match on. They need cleaning.
+    # Downcase, strip whitespace and punctuation.
+    def normalize_title(title)
+      newtitle = title.downcase
+      newtitle = newtitle.split(' - ').first.strip
+      newtitle.gsub(/[^a-zA-Z\s\d]/, '')
+    end
+
+    ##
+    # Given two normalized titles, is the Levenshtein distance within configured parameters?
+    def match?(title1, title2)
+      distance = DidYouMean::Levenshtein.distance(title1, title2)
+      distance < TITLE_MATCH_THRESHOLD
+    end
+
+    ##
+    # Given a netid and a title, look up the embargo length.
+    # Note that students can submit more than one thesis, so we must match on
+    # BOTH the netid and title.
     # This will return 0 if embargo length is N/A or empty
-    def embargo_length(netid)
+    def embargo_length(netid, title)
       load_embargo_data if @embargo_data.empty?
-      @embargo_data[netid].to_i
+      normalized_title_from_embargo_spreadsheet = normalize_title(@embargo_data[netid]['title'])
+      return @embargo_data[netid]["years"].to_i if match?(normalize_title(title), normalized_title_from_embargo_spreadsheet)
+
+      0
     end
   end
 end
