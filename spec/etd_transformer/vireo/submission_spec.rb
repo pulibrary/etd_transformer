@@ -61,6 +61,10 @@ RSpec.describe EtdTransformer::Vireo::Submission do
     expect(submission.netid).to eq 'jcheon'
   end
 
+  it 'has a title' do
+    expect(submission.title).to eq "“Against the Malaise of Time”: Embodied Fragmentation and the Temporalities of the Dada Creaturely, 1919-1937"
+  end
+
   context 'dublin core metadata' do
     it 'knows the location of the original dublin_core.xml file' do
       file_path = "#{ve.asset_directory}/DSpaceSimpleArchive/submission_8234/dublin_core.xml"

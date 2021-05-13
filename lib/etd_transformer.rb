@@ -6,6 +6,7 @@ require 'etd_transformer/dataspace/import'
 require 'etd_transformer/dataspace/submission'
 require 'etd_transformer/cli'
 require 'etd_transformer/transformer'
+require 'etd_transformer/embargo_data_point'
 
 ##
 # Transform Princeton senior theses (a.k.a. ETDs -- electronic theses and dissertations).

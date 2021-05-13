@@ -1,13 +1,18 @@
 # frozen_string_literal: true
 
-require 'shellwords'
 require 'fileutils'
+require 'shellwords'
 
 module EtdTransformer
   ##
   # Orchestrate the transformation of a Vireo export into something else
   class Transformer
     attr_reader :input_dir, :output_dir, :department, :vireo_export, :dataspace_import, :embargo_spreadsheet
+
+    # How close must two titles be to each other, in terms of Levenshtein distance,
+    # in order for us to consider them a match?
+    # https://en.wikipedia.org/wiki/Levenshtein_distance
+    TITLE_MATCH_THRESHOLD = 10
 
     ##
     # Convenience method for kicking off a transformation.
@@ -100,8 +105,8 @@ module EtdTransformer
       dataspace_submission.authorid = vireo_submission.authorid
       dataspace_submission.department = vireo_submission.department
       dataspace_submission.certificate_programs = vireo_submission.certificate_programs
-      dataspace_submission.mudd_walkin = walk_in_access(vireo_submission.netid)
-      dataspace_submission.embargo_length = embargo_length(vireo_submission.netid)
+      dataspace_submission.mudd_walkin = walk_in_access(vireo_submission.netid, vireo_submission.title)
+      dataspace_submission.embargo_length = embargo_length(vireo_submission.netid, vireo_submission.title)
       dataspace_submission.write_metadata_pu
     end
 
@@ -110,7 +115,7 @@ module EtdTransformer
     # to the DataSpace import package
     def generate_dublin_core(vireo_submission, dataspace_submission)
       dc_original = vireo_submission.dublin_core_file_path
-      dataspace_submission.write_dublin_core(dc_original, walk_in_access(vireo_submission.netid))
+      dataspace_submission.write_dublin_core(dc_original, walk_in_access(vireo_submission.netid, vireo_submission.title))
     end
 
     ##
@@ -123,25 +128,50 @@ module EtdTransformer
       m.simple_rows.each_with_index do |row, index|
         next if index.zero? # skip the header row
 
-        netid = row["Submitted By"].split("|").last.split("\\").last
-        @embargo_data[netid] = row["Embargo Years"]
-        @walk_in_data[netid] = row["Walk In Access"]
+        edp = EmbargoDataPoint.new(row)
+        @embargo_data[edp.netid] = [] if @embargo_data[edp.netid].nil?
+        @embargo_data[edp.netid] << edp
       end
     end
 
     ##
-    # There is a column in the embargo spreadsheet called Walk in Access
-    def walk_in_access(netid)
-      load_embargo_data if @walk_in_data.empty?
-      @walk_in_data[netid]
+    # Given a netid and a title, look up the walk in access value
+    def walk_in_access(netid, title)
+      load_embargo_data if @embargo_data.empty?
+      @embargo_data[netid].each do |edp|
+        return edp.walk_in_access if match?(title, edp.title)
+      end
+      'No'
     end
 
     ##
-    # Given a netid, look up the embargo length
+    # The titles contain extra data that will make them harder to match on. They need cleaning.
+    # Downcase, strip whitespace and punctuation.
+    def normalize_title(title)
+      newtitle = title.downcase
+      newtitle = newtitle.split(' - ').first.strip
+      newtitle.gsub(/[^a-zA-Z\s\d]/, '')
+    end
+
+    ##
+    # Given two normalized titles, is the Levenshtein distance within configured parameters?
+    def match?(title1, title2)
+      distance = DidYouMean::Levenshtein.distance(normalize_title(title1), normalize_title(title2))
+      distance < TITLE_MATCH_THRESHOLD
+    end
+
+    ##
+    # Given a netid and a title, look up the embargo length.
+    # Note that students can submit more than one thesis, so we must match on
+    # BOTH the netid and title.
     # This will return 0 if embargo length is N/A or empty
-    def embargo_length(netid)
+    def embargo_length(netid, title)
       load_embargo_data if @embargo_data.empty?
-      @embargo_data[netid].to_i
+      @embargo_data[netid].each do |edp|
+        return edp.years.to_i if match?(title, edp.title)
+      end
+
+      0
     end
   end
 end
