@@ -5,6 +5,7 @@ RSpec.describe EtdTransformer::Dataspace::Submission do
   let(:output_dir) { "#{$fixture_path}/exports" }
   let(:di) { EtdTransformer::Dataspace::Import.new(output_dir, di_department_name) }
   let(:ds) { described_class.new(di, '8234') }
+  let(:vireo_export) { EtdTransformer::Vireo::Export.new("#{$fixture_path}/mock-downloads/German") }
 
   it 'can be instantiated' do
     expect(ds).to be_instance_of(described_class)
@@ -24,6 +25,7 @@ RSpec.describe EtdTransformer::Dataspace::Submission do
     let(:expected_dc_file) { File.join(ds.directory_path, 'dublin_core.xml') }
     before do
       FileUtils.rm_rf(expected_dc_file) if File.exist? expected_dc_file
+      vireo_export.unzip_archive
     end
     it 'writes a dublin core metadata file to the expected location' do
       expect(File.exist?(expected_dc_file)).to eq false
