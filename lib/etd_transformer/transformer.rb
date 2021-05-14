@@ -14,6 +14,10 @@ module EtdTransformer
     # https://en.wikipedia.org/wiki/Levenshtein_distance
     TITLE_MATCH_THRESHOLD = 10
 
+    # Sometimes embargo requests come in from an admin account. This is the list of
+    # admin ids to check for embargo requests.
+    ADMIN_IDS = %w[poussart staccess].freeze
+
     ##
     # Convenience method for kicking off a transformation.
     # @param [Hash] options
@@ -163,12 +167,20 @@ module EtdTransformer
     ##
     # Given a netid and a title, look up the embargo length.
     # Note that students can submit more than one thesis, so we must match on
-    # BOTH the netid and title.
-    # This will return 0 if embargo length is N/A or empty
+    # BOTH the netid and title. Note also that embargo requests can come from
+    # an admin account instead of the student, so if we don't match on the student's
+    # netid and title, we attempt to match on the admin ids and title.
+    # This will return 0 if embargo length is N/A or empty.
+    # @param [String] netid
+    # @param [String] title
     def embargo_length(netid, title)
       load_embargo_data if @embargo_data.empty?
-      @embargo_data[netid].each do |edp|
-        return edp.years.to_i if match?(title, edp.title)
+
+      ids_to_check = [netid] | ADMIN_IDS
+      ids_to_check.each do |id|
+        @embargo_data[id]&.each do |edp|
+          return edp.years.to_i if match?(title, edp.title)
+        end
       end
 
       0
