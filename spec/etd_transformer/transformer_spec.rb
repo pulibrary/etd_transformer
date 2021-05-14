@@ -136,6 +136,12 @@ RSpec.describe EtdTransformer::Transformer do
       it "does NOT match if only the netid, but not the title, match" do
         expect(transformer.embargo_length('sofieg', 'this is a fake title')).to eq 0
       end
+      # sometimes department admins submit the embargo request
+      it "matches if the title matches and the netid is a known admin account" do
+        title = 'Metadherin Promotes Triple-Negative Breast Cancer Progression and Metastasis by Inducing Immune Evas - Michelle Anna Rowicki.xml'
+        netid = 'mrowicki'
+        expect(transformer.embargo_length(netid, title)).to eq 2
+      end
     end
   end
 
