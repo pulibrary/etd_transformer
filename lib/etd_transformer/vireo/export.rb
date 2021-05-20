@@ -70,6 +70,7 @@ module EtdTransformer
           next if index.zero? # skip the header row
           next unless row['Status'] == 'Approved'
           raise "This spreadsheet does not have the required ID column" if row['ID'].nil?
+
           @approved_submissions[row['ID']] = EtdTransformer::Vireo::Submission.new(asset_directory: @asset_directory, row: row)
         end
         @approved_submissions
