@@ -101,9 +101,9 @@ module EtdTransformer
         @metadata.simple_rows.each_with_index do |row, index|
           next if index.zero? # skip the header row
           next unless row['Status'] == 'Approved'
-          raise "This spreadsheet does not have the required ID column" if row['ID'].nil?
 
-          @approved_submissions[row['ID']] = EtdTransformer::Vireo::Submission.new(asset_directory: @asset_directory, row: row)
+          santized_id = row['ID'].to_i.to_s
+          @approved_submissions[santized_id] = EtdTransformer::Vireo::Submission.new(asset_directory: @asset_directory, row: row)
         end
         @approved_submissions
       end
