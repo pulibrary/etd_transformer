@@ -28,7 +28,7 @@ module EtdTransformer
         @student_id = @row['Student ID']
         @student_name = @row['Student name']
         @primary_document = @row['Primary document']
-        @id = @row['ID']
+        @id = @row['ID'].to_i.to_s
         @approval_date = @row['Approval date']
         @thesis_type = @row['Thesis Type']
         @certificate_programs = [] << @row['Certificate Program']

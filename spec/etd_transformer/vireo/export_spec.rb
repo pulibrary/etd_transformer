@@ -27,6 +27,13 @@ RSpec.describe EtdTransformer::Vireo::Export do
         expect { ve.check_spreadsheet_for_required_columns(spreadsheet_with_missing_columns) }.to raise_error EtdTransformer::Vireo::IncompleteSpreadsheetError
       end
     end
+    context 'an id number with appended decimals' do
+      let(:input) { "#{$fixture_path}/mock-downloads/Economics" }
+      it "strips the extra zero" do
+        expect(ve.approved_submissions.first[0]).to eq "9508" # Not 9508.0
+        expect(ve.approved_submissions.first.last.id).to eq "9508"
+      end
+    end
   end
 
   context 'initial file setup' do
