@@ -49,6 +49,7 @@ module EtdTransformer
     def transform
       dataspace_submissions.each do |ds|
         copy_license_file(ds)
+        copy_contents_file(ds)
         process_pdf(ds)
         vs = @vireo_export.approved_submissions[ds.id]
         generate_metadata_pu(vs, ds)
@@ -83,6 +84,16 @@ module EtdTransformer
       original_license = File.join(vs.source_files_directory, license_filename)
       destination_path = File.join(dataspace_submission.directory_path, license_filename)
       FileUtils.cp(original_license, destination_path)
+    end
+
+    ##
+    # Copy contents file from vireo submission to dataspace submission
+    def copy_contents_file(dataspace_submission)
+      vs = @vireo_export.approved_submissions[dataspace_submission.id]
+      filename = 'contents'
+      original = File.join(vs.source_files_directory, filename)
+      destination_path = File.join(dataspace_submission.directory_path, filename)
+      FileUtils.cp(original, destination_path)
     end
 
     ##

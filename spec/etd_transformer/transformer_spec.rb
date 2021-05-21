@@ -88,6 +88,12 @@ RSpec.describe EtdTransformer::Transformer do
       transformer.copy_license_file(ds)
       expect(File.exist?(destination_path)).to eq true
     end
+    it 'copies the contents file' do
+      destination_path = File.join(ds.directory_path, 'contents')
+      expect(File.exist?(destination_path)).to eq false
+      transformer.copy_contents_file(ds)
+      expect(File.exist?(destination_path)).to eq true
+    end
     context 'metadata' do
       let(:department_name) { 'German' }
       it 'generates the metadata_pu' do
