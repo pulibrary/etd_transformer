@@ -14,6 +14,20 @@ module EtdTransformer
     class Export
       attr_reader :department_name, :asset_directory
 
+      REQUIRED_SPREADSHEET_COLUMNS = [
+        'Approval date',
+        'Certificate Program',
+        'Department',
+        'ID',
+        'Primary document',
+        'Student email',
+        'Student ID',
+        'Student name',
+        'Status',
+        'Submission date',
+        'Title'
+      ].freeze
+
       ##
       # @param [String] Full path to the input directory. Last directory must be a department name.
       def initialize(input)
@@ -43,10 +57,28 @@ module EtdTransformer
       end
 
       ##
+      # Check that the spreadsheet has all of the columns that will be needed for processing.
+      # If we're missing columns, inform the user as soon as possible.
+      def check_spreadsheet_for_required_columns(spreadsheet)
+        creek = Creek::Book.new spreadsheet, with_headers: true
+        m = creek.sheets[0]
+        spreadsheet_columns = m.simple_rows.first.values
+        missing_columns = []
+        REQUIRED_SPREADSHEET_COLUMNS.each do |required_column_name|
+          missing_columns << required_column_name unless spreadsheet_columns.include? required_column_name
+        end
+        return 0 if missing_columns.empty?
+
+        message = "Spreadsheet #{spreadsheet} is missing required columns: #{missing_columns}"
+        raise EtdTransformer::Vireo::IncompleteSpreadsheetError, message
+      end
+
+      ##
       # Load the Excel spreadsheet into memory. We use https://github.com/pythonicrubyist/creek
       # to read data from the excel spreadsheet.
       # @return [Creek::Sheet]
       def load_metadata
+        check_spreadsheet_for_required_columns(metadata_file)
         creek = Creek::Book.new metadata_file, with_headers: true
         m = creek.sheets[0]
         @metadata = m

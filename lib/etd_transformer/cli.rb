@@ -19,6 +19,8 @@ module EtdTransformer
       else
         output_help_message
       end
+    rescue EtdTransformer::Vireo::IncompleteSpreadsheetError => e
+      puts "\n\nERROR: #{e.message}"
     end
 
     def self.exit_on_failure?

@@ -2,6 +2,7 @@
 
 require 'etd_transformer/vireo/export'
 require 'etd_transformer/vireo/submission'
+require 'etd_transformer/vireo/incomplete_spreadsheet_error'
 require 'etd_transformer/dataspace/import'
 require 'etd_transformer/dataspace/submission'
 require 'etd_transformer/cli'
