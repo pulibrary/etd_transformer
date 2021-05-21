@@ -6,10 +6,12 @@ Layout/LineLength:
     - lib/etd_transformer/transformer.rb
     - spec/etd_transformer/transformer_spec.rb
     - spec/etd_transformer/vireo/submission_spec.rb
+    - spec/etd_transformer/vireo/export_spec.rb
 
 Metrics/AbcSize:
   Exclude:
     - lib/etd_transformer/dataspace/submission.rb
+    - lib/etd_transformer/cli.rb
 
 Metrics/BlockLength:
   Enabled: false

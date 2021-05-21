@@ -20,6 +20,15 @@ RSpec.describe EtdTransformer::Vireo::Export do
     expect(ve.metadata.rows.count).to eq 8
   end
 
+  context 'a spreadsheet with Excel problems' do
+    context 'missing columns' do
+      let(:spreadsheet_with_missing_columns) { "#{$fixture_path}/malformed_spreadsheets/missing_columns.xlsx" }
+      it "raises a specific error with the missing column name" do
+        expect { ve.check_spreadsheet_for_required_columns(spreadsheet_with_missing_columns) }.to raise_error EtdTransformer::Vireo::IncompleteSpreadsheetError
+      end
+    end
+  end
+
   context 'initial file setup' do
     let(:unzipped_path) { File.join(input, 'DSpaceSimpleArchive') }
     before do
