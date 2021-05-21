@@ -52,7 +52,8 @@ module EtdTransformer
         process_pdf(ds)
         vs = @vireo_export.approved_submissions[ds.id]
         generate_metadata_pu(vs, ds)
-        puts ds.id
+        generate_dublin_core(vs, ds)
+        puts "Finished processing #{ds.id}"
       end
     end
 
@@ -142,7 +143,7 @@ module EtdTransformer
     # Given a netid and a title, look up the walk in access value
     def walk_in_access(netid, title)
       load_embargo_data if @embargo_data.empty?
-      @embargo_data[netid].each do |edp|
+      @embargo_data[netid]&.each do |edp|
         return edp.walk_in_access if match?(title, edp.title)
       end
       'No'
