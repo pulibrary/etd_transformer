@@ -49,10 +49,12 @@ module EtdTransformer
     def transform
       dataspace_submissions.each do |ds|
         copy_license_file(ds)
+        copy_contents_file(ds)
         process_pdf(ds)
         vs = @vireo_export.approved_submissions[ds.id]
         generate_metadata_pu(vs, ds)
-        puts ds.id
+        generate_dublin_core(vs, ds)
+        puts "Finished processing #{ds.id}"
       end
     end
 
@@ -82,6 +84,16 @@ module EtdTransformer
       original_license = File.join(vs.source_files_directory, license_filename)
       destination_path = File.join(dataspace_submission.directory_path, license_filename)
       FileUtils.cp(original_license, destination_path)
+    end
+
+    ##
+    # Copy contents file from vireo submission to dataspace submission
+    def copy_contents_file(dataspace_submission)
+      vs = @vireo_export.approved_submissions[dataspace_submission.id]
+      filename = 'contents'
+      original = File.join(vs.source_files_directory, filename)
+      destination_path = File.join(dataspace_submission.directory_path, filename)
+      FileUtils.cp(original, destination_path)
     end
 
     ##
@@ -142,7 +154,7 @@ module EtdTransformer
     # Given a netid and a title, look up the walk in access value
     def walk_in_access(netid, title)
       load_embargo_data if @embargo_data.empty?
-      @embargo_data[netid].each do |edp|
+      @embargo_data[netid]&.each do |edp|
         return edp.walk_in_access if match?(title, edp.title)
       end
       'No'
