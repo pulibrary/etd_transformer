@@ -64,12 +64,12 @@ module EtdTransformer
               xml.text @department
             end
             if @mudd_walkin
-              xml.dcvalue(element: 'mudd.walkin') do
+              xml.dcvalue(element: 'mudd', qualifier: 'walkin') do
                 xml.text @mudd_walkin
               end
             end
             if embargo_terms
-              xml.dcvalue(element: 'embargo.terms') do
+              xml.dcvalue(element: 'embargo', qualifier: 'terms') do
                 xml.text embargo_terms
               end
             end

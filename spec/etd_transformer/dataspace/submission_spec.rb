@@ -98,13 +98,13 @@ RSpec.describe EtdTransformer::Dataspace::Submission do
       ds.classyear = 2000
       ds.embargo_length = 5
       expect(ds.embargo_terms).to eq '2005-07-01'
-      embargo_terms_in_metadata_pu = ds.metadata_pu.doc.xpath('//dcvalue[@element="embargo.terms"]').text
+      embargo_terms_in_metadata_pu = ds.metadata_pu.doc.xpath('//dcvalue[@element="embargo"][@qualifier="terms"]').text
       expect(embargo_terms_in_metadata_pu).to eq '2005-07-01'
     end
     it 'writes the mudd.walkin value' do
       ds.mudd_walkin = 'Yes'
       expect(ds.mudd_walkin).to eq 'Yes'
-      mudd_walkin_in_metadata_pu = ds.metadata_pu.doc.xpath('//dcvalue[@element="mudd.walkin"]').text
+      mudd_walkin_in_metadata_pu = ds.metadata_pu.doc.xpath('//dcvalue[@element="mudd"][@qualifier="walkin"]').text
       expect(mudd_walkin_in_metadata_pu).to eq 'Yes'
     end
   end
