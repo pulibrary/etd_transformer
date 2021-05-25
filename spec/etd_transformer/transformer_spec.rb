@@ -7,7 +7,15 @@ RSpec.describe EtdTransformer::Transformer do
   let(:department_name) { 'German' }
   let(:output_dir) { "#{$fixture_path}/exports" }
   let(:embargo_spreadsheet) { "#{$fixture_path}/mock-downloads/embargo_spreadsheet_with_netids.xlsx" }
-  let(:options) { { input: input_dir, output: output_dir, embargo_spreadsheet: embargo_spreadsheet } }
+  let(:collection_handle) { '88435/dsp013n203z151' }
+  let(:options) do
+    {
+      input: input_dir,
+      output: output_dir,
+      embargo_spreadsheet: embargo_spreadsheet,
+      collection_handle: collection_handle
+    }
+  end
   let(:transformer) { described_class.new(options) }
 
   before do
@@ -18,6 +26,9 @@ RSpec.describe EtdTransformer::Transformer do
     it 'has an input and output' do
       expect(transformer.input_dir).to eq input_dir
       expect(transformer.output_dir).to eq output_dir
+    end
+    it 'has a collection handle' do
+      expect(transformer.collection_handle).to eq collection_handle
     end
     it 'has a vireo export' do
       expect(transformer.vireo_export).to be_instance_of(EtdTransformer::Vireo::Export)
@@ -92,6 +103,12 @@ RSpec.describe EtdTransformer::Transformer do
       destination_path = File.join(ds.directory_path, 'contents')
       expect(File.exist?(destination_path)).to eq false
       transformer.copy_contents_file(ds)
+      expect(File.exist?(destination_path)).to eq true
+    end
+    it 'creates a collection import file' do
+      destination_path = File.join(ds.directory_path, 'collections')
+      expect(File.exist?(destination_path)).to eq false
+      transformer.write_collections_file(ds)
       expect(File.exist?(destination_path)).to eq true
     end
     context 'metadata' do

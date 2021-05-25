@@ -7,7 +7,7 @@ module EtdTransformer
   ##
   # Orchestrate the transformation of a Vireo export into something else
   class Transformer
-    attr_reader :input_dir, :output_dir, :department, :vireo_export, :dataspace_import, :embargo_spreadsheet
+    attr_reader :input_dir, :output_dir, :department, :vireo_export, :dataspace_import, :embargo_spreadsheet, :collection_handle
 
     # How close must two titles be to each other, in terms of Levenshtein distance,
     # in order for us to consider them a match?
@@ -37,6 +37,7 @@ module EtdTransformer
       @input_dir = options[:input]
       @output_dir = options[:output]
       @embargo_spreadsheet = options[:embargo_spreadsheet]
+      @collection_handle = options[:collection_handle]
       @department = @input_dir.split('/').last
       @vireo_export = EtdTransformer::Vireo::Export.new(@input_dir)
       @dataspace_import = EtdTransformer::Dataspace::Import.new(@output_dir, @department)
@@ -50,6 +51,7 @@ module EtdTransformer
       dataspace_submissions.each do |ds|
         copy_license_file(ds)
         copy_contents_file(ds)
+        write_collections_file(ds)
         process_pdf(ds)
         vs = @vireo_export.approved_submissions[ds.id]
         generate_metadata_pu(vs, ds)
@@ -94,6 +96,12 @@ module EtdTransformer
       original = File.join(vs.source_files_directory, filename)
       destination_path = File.join(dataspace_submission.directory_path, filename)
       FileUtils.cp(original, destination_path)
+    end
+
+    def write_collections_file(dataspace_submission)
+      filename = 'collections'
+      destination_path = File.join(dataspace_submission.directory_path, filename)
+      File.open(destination_path, "w") { |f| f.write @collection_handle }
     end
 
     ##

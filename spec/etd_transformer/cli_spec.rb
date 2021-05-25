@@ -4,8 +4,16 @@ RSpec.describe EtdTransformer::Cli do
   let(:cli) { described_class.new }
   let(:input_dir) { "#{$fixture_path}/mock-downloads/German" }
   let(:output_dir) { "#{$fixture_path}/cli_invoked" }
+  let(:collection_handle) { '88435/dsp013n203z151' }
   let(:embargo_spreadsheet) { "#{$fixture_path}/mock-downloads/embargo_spreadsheet_with_netids.xlsx" }
-  let(:options) { { input: input_dir, output: output_dir, embargo_spreadsheet: embargo_spreadsheet } }
+  let(:options) do
+    {
+      input: input_dir,
+      output: output_dir,
+      embargo_spreadsheet: embargo_spreadsheet,
+      collection_handle: collection_handle
+    }
+  end
 
   context 'without arguments' do
     it 'prints a help message' do
@@ -28,6 +36,10 @@ RSpec.describe EtdTransformer::Cli do
 
       it 'has an embargo spreadsheet' do
         expect { cli.invoke(:process, [], options) }.to output(/#{embargo_spreadsheet}/).to_stdout
+      end
+
+      it 'has a collections handle' do
+        expect { cli.invoke(:process, [], options) }.to output(/#{collection_handle}/).to_stdout
       end
     end
     context 'with spaces in path' do
