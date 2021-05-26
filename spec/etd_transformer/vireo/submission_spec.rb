@@ -57,6 +57,11 @@ RSpec.describe EtdTransformer::Vireo::Submission do
     expect(submission.original_pdf_full_path).to eq full_path
   end
 
+  it 'knows the full path of the contents file' do
+    contents_file = "#{ve.asset_directory}/DSpaceSimpleArchive/submission_8234/contents"
+    expect(submission.contents_file).to eq contents_file
+  end
+
   it 'has a netid extrapolated from email address' do
     expect(submission.netid).to eq 'jcheon'
   end

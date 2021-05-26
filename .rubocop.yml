@@ -22,6 +22,7 @@ Metrics/ClassLength:
 Metrics/MethodLength:
   Exclude:
     - lib/etd_transformer/dataspace/submission.rb
+    - lib/etd_transformer/transformer.rb
 
 Style/GlobalVars:
   Exclude:

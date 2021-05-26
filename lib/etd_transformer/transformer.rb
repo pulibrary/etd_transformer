@@ -94,9 +94,8 @@ module EtdTransformer
     # Copy contents file from vireo submission to dataspace submission
     def copy_contents_file(dataspace_submission)
       vs = @vireo_export.approved_submissions[dataspace_submission.id]
-      filename = 'contents'
-      original = File.join(vs.source_files_directory, filename)
-      destination_path = File.join(dataspace_submission.directory_path, filename)
+      original = vs.contents_file
+      destination_path = File.join(dataspace_submission.directory_path, 'contents')
       FileUtils.cp(original, destination_path)
     end
 
@@ -105,9 +104,7 @@ module EtdTransformer
     # @param [EtdTransformer::Vireo::Submission] vs
     # @param [EtdTransformer::DataSpace::Submission] ds
     def copy_contents(vireo_submission, dataspace_submission)
-      filename = 'contents'
-      contents_file = File.join(vireo_submission.source_files_directory, filename)
-      parsed = CSV.read(contents_file, col_sep: "\t", quote_char: nil)
+      parsed = CSV.read(vireo_submission.contents_file, col_sep: "\t", quote_char: nil)
       extra_file = parsed.select { |a| a[1] == "bundle:CONTENT" }.flatten.first
       original = File.join(vireo_submission.source_files_directory, extra_file)
       destination_path = File.join(dataspace_submission.directory_path, extra_file)

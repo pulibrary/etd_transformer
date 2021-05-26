@@ -57,6 +57,12 @@ module EtdTransformer
       end
 
       ##
+      # The full path to the contents file
+      def contents_file
+        File.join(source_files_directory, 'contents')
+      end
+
+      ##
       # The full path to the original dublin_core.xml file
       def dublin_core_file_path
         File.join(source_files_directory, 'dublin_core.xml')
