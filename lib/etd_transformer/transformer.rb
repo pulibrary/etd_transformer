@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'csv'
 require 'fileutils'
 require 'shellwords'
 
@@ -54,6 +55,7 @@ module EtdTransformer
         write_collections_file(ds)
         process_pdf(ds)
         vs = @vireo_export.approved_submissions[ds.id]
+        copy_contents(vs, ds)
         generate_metadata_pu(vs, ds)
         generate_dublin_core(vs, ds)
         puts "Finished processing #{ds.id}"
@@ -95,6 +97,20 @@ module EtdTransformer
       filename = 'contents'
       original = File.join(vs.source_files_directory, filename)
       destination_path = File.join(dataspace_submission.directory_path, filename)
+      FileUtils.cp(original, destination_path)
+    end
+
+    ##
+    # Copy any file referenced in the contents file to the new destination
+    # @param [EtdTransformer::Vireo::Submission] vs
+    # @param [EtdTransformer::DataSpace::Submission] ds
+    def copy_contents(vireo_submission, dataspace_submission)
+      filename = 'contents'
+      contents_file = File.join(vireo_submission.source_files_directory, filename)
+      parsed = CSV.read(contents_file, col_sep: "\t", quote_char: nil)
+      extra_file = parsed.select { |a| a[1] == "bundle:CONTENT" }.flatten.first
+      original = File.join(vireo_submission.source_files_directory, extra_file)
+      destination_path = File.join(dataspace_submission.directory_path, extra_file)
       FileUtils.cp(original, destination_path)
     end
 

@@ -93,16 +93,25 @@ RSpec.describe EtdTransformer::Transformer do
       expect(original_number_of_pages + 1).to eq post_processing_number_of_pages
     end
 
+    context 'contents' do
+      it 'copies the contents file' do
+        destination_path = File.join(ds.directory_path, 'contents')
+        expect(File.exist?(destination_path)).to eq false
+        transformer.copy_contents_file(ds)
+        expect(File.exist?(destination_path)).to eq true
+      end
+      it 'copies any files referenced in the contents file' do
+        destination_path = File.join(ds.directory_path, 'fake_file.docx')
+        expect(File.exist?(destination_path)).to eq false
+        transformer.copy_contents(vs, ds)
+        expect(File.exist?(destination_path)).to eq true
+      end
+    end
+
     it 'copies the license file' do
       destination_path = File.join(ds.directory_path, 'LICENSE.txt')
       expect(File.exist?(destination_path)).to eq false
       transformer.copy_license_file(ds)
-      expect(File.exist?(destination_path)).to eq true
-    end
-    it 'copies the contents file' do
-      destination_path = File.join(ds.directory_path, 'contents')
-      expect(File.exist?(destination_path)).to eq false
-      transformer.copy_contents_file(ds)
       expect(File.exist?(destination_path)).to eq true
     end
     it 'creates a collection import file' do
