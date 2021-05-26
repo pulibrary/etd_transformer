@@ -100,17 +100,29 @@ module EtdTransformer
     end
 
     ##
+    # Given a DSpace contents file, return an array of all bundle:CONTENT filenames
+    # @return [<String>] An array of all bundle:CONTENT filenames
+    def list_extra_files(contents_file)
+      parsed = CSV.read(contents_file, col_sep: "\t", quote_char: nil)
+      extra_file_pairs = parsed.select { |a| a[1] == "bundle:CONTENT" }
+      return [] unless extra_file_pairs
+
+      extra_file_pairs.map(&:first)
+    end
+
+    ##
     # Copy any file referenced in the contents file to the new destination
     # @param [EtdTransformer::Vireo::Submission] vs
     # @param [EtdTransformer::DataSpace::Submission] ds
     def copy_contents(vireo_submission, dataspace_submission)
-      parsed = CSV.read(vireo_submission.contents_file, col_sep: "\t", quote_char: nil)
-      extra_file = parsed.select { |a| a[1] == "bundle:CONTENT" }.flatten.first
-      return unless extra_file
+      extra_files = list_extra_files(vireo_submission.contents_file)
+      return if extra_files.empty?
 
-      original = File.join(vireo_submission.source_files_directory, extra_file)
-      destination_path = File.join(dataspace_submission.directory_path, extra_file)
-      FileUtils.cp(original, destination_path)
+      extra_files.each do |filename|
+        original = File.join(vireo_submission.source_files_directory, filename)
+        destination_path = File.join(dataspace_submission.directory_path, filename)
+        FileUtils.cp(original, destination_path)
+      end
     end
 
     def write_collections_file(dataspace_submission)

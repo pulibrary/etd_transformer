@@ -100,11 +100,18 @@ RSpec.describe EtdTransformer::Transformer do
         transformer.copy_contents_file(ds)
         expect(File.exist?(destination_path)).to eq true
       end
-      it 'copies any files referenced in the contents file' do
-        destination_path = File.join(ds.directory_path, 'fake_file.docx')
-        expect(File.exist?(destination_path)).to eq false
-        transformer.copy_contents(vs, ds)
-        expect(File.exist?(destination_path)).to eq true
+      context 'when there are extra files' do
+        let(:complex_contents_file) { "#{$fixture_path}/contents_files/complex_contents" }
+        it 'generates a list of all the extra files in the contents file' do
+          extra_files = transformer.list_extra_files(complex_contents_file)
+          expect(extra_files.size).to eq 15
+        end
+        it 'copies any files referenced in the contents file' do
+          destination_path = File.join(ds.directory_path, 'fake_file.docx')
+          expect(File.exist?(destination_path)).to eq false
+          transformer.copy_contents(vs, ds)
+          expect(File.exist?(destination_path)).to eq true
+        end
       end
       context 'when there are no extra files' do
         let(:ds) { transformer.dataspace_submissions.last }
