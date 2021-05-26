@@ -106,6 +106,12 @@ RSpec.describe EtdTransformer::Transformer do
         transformer.copy_contents(vs, ds)
         expect(File.exist?(destination_path)).to eq true
       end
+      context 'when there are no extra files' do
+        let(:ds) { transformer.dataspace_submissions.last }
+        it 'does not attempt to copy' do
+          expect { transformer.copy_contents(vs, ds) }.not_to raise_error
+        end
+      end
     end
 
     it 'copies the license file' do
