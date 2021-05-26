@@ -106,6 +106,8 @@ module EtdTransformer
     def copy_contents(vireo_submission, dataspace_submission)
       parsed = CSV.read(vireo_submission.contents_file, col_sep: "\t", quote_char: nil)
       extra_file = parsed.select { |a| a[1] == "bundle:CONTENT" }.flatten.first
+      return unless extra_file
+
       original = File.join(vireo_submission.source_files_directory, extra_file)
       destination_path = File.join(dataspace_submission.directory_path, extra_file)
       FileUtils.cp(original, destination_path)
