@@ -25,6 +25,7 @@ module EtdTransformer
         'Student name',
         'Status',
         'Submission date',
+        'Thesis Type',
         'Title'
       ].freeze
 
