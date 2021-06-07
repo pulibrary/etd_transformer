@@ -96,11 +96,17 @@ module EtdTransformer
       # Get the department name from the spreadsheet row. Adjust as needed to adhere
       # to Princeton formatting rules.
       def adjusted_department_name
+        explicit_department_mapper = {
+          "Architecture" => "Architecture School",
+          "Independent Study" => "Independent Concentration",
+          "Ops Research & Financial Engr" => "Operations Research and Financial Engineering"
+        }
+        return explicit_department_mapper[@row['Department']] if explicit_department_mapper.key? @row['Department']
+
         dept_from_spreadsheet = @row['Department']
         dept_from_spreadsheet = dept_from_spreadsheet.split('(').first
         dept_from_spreadsheet = dept_from_spreadsheet.gsub('&', 'and')
-        dept_from_spreadsheet = dept_from_spreadsheet.gsub('Engr', 'Engineering')
-        dept_from_spreadsheet.strip
+        dept_from_spreadsheet.gsub('Engr', 'Engineering').strip
       end
 
       ##
