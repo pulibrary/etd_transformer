@@ -89,16 +89,31 @@ RSpec.describe EtdTransformer::Vireo::Submission do
         expect(submission.department).to eq 'German'
       end
       context 'vireo munged department names' do
-        let(:row) do
-          {
-            "Student name" => "Toast, Jane",
-            "Status" => "Approved",
-            "Thesis Type" => "Home Department Thesis",
-            "Department" => "Engr & Food (Fake)"
-          }
+        context 'replaces ampersands and engr' do
+          let(:row) do
+            {
+              "Student name" => "Toast, Jane",
+              "Status" => "Approved",
+              "Thesis Type" => "Home Department Thesis",
+              "Department" => "Engr & Food (Fake)"
+            }
+          end
+          it 'adjusts the department name' do
+            expect(submission.department).to eq 'Engineering and Food'
+          end
         end
-        it 'adjusts the department name' do
-          expect(submission.department).to eq 'Engineering and Food'
+        context 'maps vireo-specific departments' do
+          let(:row) do
+            {
+              "Student name" => "Toast, Jane",
+              "Status" => "Approved",
+              "Thesis Type" => "Home Department Thesis",
+              "Department" => "Architecture"
+            }
+          end
+          it 'uses department mapper' do
+            expect(submission.department).to eq 'Architecture School'
+          end
         end
       end
       context 'certificate programs' do
