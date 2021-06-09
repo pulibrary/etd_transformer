@@ -99,13 +99,13 @@ module EtdTransformer
         explicit_department_mapper = {
           "Architecture" => "Architecture School",
           "Independent Study" => "Independent Concentration",
-          "Ops Research & Financial Engr" => "Operations Research and Financial Engineering"
+          "Ops Research & Financial Engr" => "Operations Research and Financial Engineering",
+          "Public & International Affairs" => "Princeton School of Public and International Affairs"
         }
         return explicit_department_mapper[@row['Department']] if explicit_department_mapper.key? @row['Department']
 
         dept_from_spreadsheet = @row['Department']
-        dept_from_spreadsheet = dept_from_spreadsheet.split('(').first
-        dept_from_spreadsheet = dept_from_spreadsheet.gsub('&', 'and')
+        dept_from_spreadsheet = dept_from_spreadsheet.split('(').first.gsub('&', 'and')
         dept_from_spreadsheet.gsub('Engr', 'Engineering').strip
       end
 
