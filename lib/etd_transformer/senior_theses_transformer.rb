@@ -7,7 +7,7 @@ require 'shellwords'
 module EtdTransformer
   ##
   # Orchestrate the transformation of a Vireo export into something else
-  class Transformer
+  class SeniorThesesTransformer
     attr_reader :input_dir, :output_dir, :department, :vireo_export, :dataspace_import, :embargo_spreadsheet, :collection_handle
 
     # How close must two titles be to each other, in terms of Levenshtein distance,

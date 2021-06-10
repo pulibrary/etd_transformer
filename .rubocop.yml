@@ -3,8 +3,8 @@ inherit_from: .rubocop_todo.yml
 Layout/LineLength:
   Max: 135
   Exclude:
-    - lib/etd_transformer/transformer.rb
-    - spec/etd_transformer/transformer_spec.rb
+    - lib/etd_transformer/senior_theses_transformer.rb
+    - spec/etd_transformer/senior_thesis_transformer_spec.rb
     - spec/etd_transformer/vireo/submission_spec.rb
     - spec/etd_transformer/vireo/export_spec.rb
 
@@ -22,7 +22,7 @@ Metrics/ClassLength:
 Metrics/MethodLength:
   Exclude:
     - lib/etd_transformer/dataspace/submission.rb
-    - lib/etd_transformer/transformer.rb
+    - lib/etd_transformer/senior_theses_transformer.rb
 
 Style/GlobalVars:
   Exclude:

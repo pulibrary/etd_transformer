@@ -2,7 +2,7 @@
 
 require 'pdf-reader'
 
-RSpec.describe EtdTransformer::Transformer do
+RSpec.describe EtdTransformer::SeniorThesesTransformer do
   let(:input_dir) { "#{$fixture_path}/mock-downloads/#{department_name}" }
   let(:department_name) { 'German' }
   let(:output_dir) { "#{$fixture_path}/exports" }
