@@ -77,8 +77,5 @@ RSpec.describe EtdTransformer::Cli do
     it 'has an output directory' do
       expect { cli.invoke(:process_dissertations, [], options) }.to output(/#{output_dir}/).to_stdout
     end
-
-    it 'unzips the directory' do
-    end
   end
 end
