@@ -17,12 +17,24 @@ module EtdTransformer
       @input_dir = options[:input]
       @output_dir = options[:output]
       setup_filesystem
+      create_dissertations
     end
 
     ##
     # Ensure the directory where the Dataspace imports will be written exists
     def setup_filesystem
       FileUtils.mkdir_p(@output_dir)
+    end
+
+    def dissertations
+      @dissertations ||= create_dissertations
+    end
+
+    def create_dissertations
+      @dissertations = []
+      Dir.children(@input_dir).each do |dissertation|
+        dissertations << dissertation
+      end
     end
   end
 end
