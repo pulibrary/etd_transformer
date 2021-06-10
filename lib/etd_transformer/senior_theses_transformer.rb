@@ -22,11 +22,11 @@ module EtdTransformer
     ##
     # Convenience method for kicking off a transformation.
     # @param [Hash] options
-    # @return [EtdTransformer::Transformer]
+    # @return [EtdTransformer::SeniorThesesTransformer]
     # @example
-    #  EtdTransformer::Transformer.transform(input: '/foo', output: '/bar')
+    #  EtdTransformer::SeniorThesesTransformer.transform(input: '/foo', output: '/bar')
     def self.transform(options)
-      transformer = EtdTransformer::Transformer.new(options)
+      transformer = EtdTransformer::SeniorThesesTransformer.new(options)
       transformer.transform
       transformer
     end

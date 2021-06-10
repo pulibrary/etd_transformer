@@ -23,7 +23,7 @@ RSpec.describe EtdTransformer::Cli do
 
   context 'with required arguments' do
     before do
-      allow(EtdTransformer::Transformer).to receive(:transform)
+      allow(EtdTransformer::SeniorThesesTransformer).to receive(:transform)
     end
     context 'no spaces in path' do
       it 'has an input directory' do

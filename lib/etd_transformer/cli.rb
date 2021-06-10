@@ -14,7 +14,7 @@ module EtdTransformer
     def process
       if all_required_options_present?
         output_options
-        EtdTransformer::Transformer.transform(options)
+        EtdTransformer::SeniorThesesTransformer.transform(options)
       else
         output_help_message
       end
