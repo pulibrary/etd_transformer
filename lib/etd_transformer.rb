@@ -6,7 +6,7 @@ require 'etd_transformer/vireo/incomplete_spreadsheet_error'
 require 'etd_transformer/dataspace/import'
 require 'etd_transformer/dataspace/submission'
 require 'etd_transformer/cli'
-require 'etd_transformer/transformer'
+require 'etd_transformer/senior_theses_transformer'
 require 'etd_transformer/embargo_data_point'
 
 ##
