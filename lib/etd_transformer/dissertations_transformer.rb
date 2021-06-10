@@ -9,7 +9,7 @@ module EtdTransformer
   # Orchestrate the transformation from ProQuestDissertation to DataSpaceSubmission
   class DissertationsTransformer
     attr_reader :input_dir, :output_dir
-    
+
     ##
     # Accept an options hash as passed from Thor and configure a transformation.
     # @param [Hash] options
