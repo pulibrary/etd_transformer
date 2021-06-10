@@ -6,3 +6,4 @@ doc/
 .yardoc
 spec/fixtures/exports
 spec/fixtures/cli_invoked
+spec/fixtures/proquest_dissertations/**/*
