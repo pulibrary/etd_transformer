@@ -16,6 +16,13 @@ module EtdTransformer
     def initialize(options)
       @input_dir = options[:input]
       @output_dir = options[:output]
+      setup_filesystem
+    end
+
+    ##
+    # Ensure the directory where the Dataspace imports will be written exists
+    def setup_filesystem
+      FileUtils.mkdir_p(@output_dir)
     end
   end
 end
