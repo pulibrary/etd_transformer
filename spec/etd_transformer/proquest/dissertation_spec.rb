@@ -20,4 +20,8 @@ RSpec.describe EtdTransformer::Proquest::Dissertation do
     expect(pd.dir).to eq unzipped_dir
     expect(File.directory?(unzipped_dir)).to eq true
   end
+
+  xit "has a metadata xml file" do
+    expect(pd.metadata).to be_instance_of Nokogiri::Doc
+  end
 end
