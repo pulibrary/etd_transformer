@@ -10,11 +10,25 @@ module EtdTransformer
     option :output, desc: 'Full path to output', alias: 'o'
     option :embargo_spreadsheet, desc: 'Full path to embargo spreadsheet', alias: 'e'
     option :collection_handle, desc: 'The handle identifier of the DataSpace collection destination', alias: 'c'
-    desc 'process', 'Process vireo ETDs into DataSpace ETDs'
-    def process
-      if all_required_options_present?
+    desc 'process_theses', 'Process vireo ETDs into DataSpace ETDs'
+    def process_theses
+      if all_required_thesis_options_present?
         output_options
         EtdTransformer::SeniorThesesTransformer.transform(options)
+      else
+        output_help_message
+      end
+    rescue EtdTransformer::Vireo::IncompleteSpreadsheetError => e
+      puts "\n\nERROR: #{e.message}"
+    end
+
+    option :input, desc: 'Full path to input files', alias: 'i'
+    option :output, desc: 'Full path to output', alias: 'o'
+    desc 'process_dissertations', 'Process proquest ETDs into DataSpace ETDs'
+    def process_dissertations
+      if all_required_dissertation_options_present?
+        output_options
+        # EtdTransformer::DissertationTransformer.transform(options)
       else
         output_help_message
       end
@@ -28,7 +42,7 @@ module EtdTransformer
 
     no_commands do
       def output_help_message
-        puts 'Type thor help etd_transformer:cli:process for a list of all options'
+        puts 'Type thor help etd_transformer:cli:process_theses or etd_transformer:cli:process_dissertations for a list of all options'
       end
 
       def output_options
@@ -38,8 +52,12 @@ module EtdTransformer
         puts "DataSpace import collection will be #{options[:collection_handle]}"
       end
 
-      def all_required_options_present?
+      def all_required_thesis_options_present?
         true if options[:input] && options[:output] && options[:embargo_spreadsheet] && options[:collection_handle]
+      end
+
+      def all_required_dissertation_options_present?
+        true if options[:input] && options[:output]
       end
     end
   end
