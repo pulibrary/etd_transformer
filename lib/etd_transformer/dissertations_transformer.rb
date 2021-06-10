@@ -32,8 +32,9 @@ module EtdTransformer
 
     def create_dissertations
       @dissertations = []
-      Dir.children(@input_dir).each do |dissertation|
-        dissertations << dissertation
+      Dir["#{@input_dir}/*.zip"].each do |dissertation_zipfile|
+        pd = EtdTransformer::Proquest::Dissertation.new(File.join(@input_dir, dissertation_zipfile))
+        dissertations << pd
       end
     end
   end
