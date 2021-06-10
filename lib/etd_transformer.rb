@@ -7,6 +7,7 @@ require 'etd_transformer/dataspace/import'
 require 'etd_transformer/dataspace/submission'
 require 'etd_transformer/cli'
 require 'etd_transformer/senior_theses_transformer'
+require 'etd_transformer/dissertations_transformer'
 require 'etd_transformer/embargo_data_point'
 
 ##
