@@ -61,7 +61,7 @@ RSpec.describe EtdTransformer::Cli do
   end
 
   context 'process dissertations with required arguments' do
-    let(:input_dir) { "#{$fixture_path}/mock-downloads/dissertations" }
+    let(:input_dir) { "#{$fixture_path}/proquest_dissertations" }
     let(:output_dir) { "#{$fixture_path}/cli_invoked" }
     let(:options) do
       {
