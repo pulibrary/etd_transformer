@@ -35,7 +35,7 @@ RSpec.describe EtdTransformer::Proquest::Dissertation do
       expect(pd.title).to eq title
     end
 
-    it "extracts the department" do 
+    it "extracts the department" do
       expect(pd.department).to eq department
     end
   end
