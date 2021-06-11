@@ -41,7 +41,7 @@ module EtdTransformer
       @collection_handle = options[:collection_handle]
       @department = @input_dir.split('/').last # TODO: input can be anywhere.
       @vireo_export = EtdTransformer::Vireo::Export.new(@input_dir)
-      @dataspace_import = EtdTransformer::Dataspace::Import.new(@output_dir, @department)
+      @dataspace_import = EtdTransformer::Dataspace::Import.new(@output_dir)
       @embargo_data = {}
       @walk_in_data = {}
     end
