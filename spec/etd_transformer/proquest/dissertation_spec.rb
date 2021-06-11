@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
 RSpec.describe EtdTransformer::Proquest::Dissertation do
-  let(:zipfile) { "#{$fixture_path}/proquest_dissertations/etdadmin_upload_790987.zip" }
+  let(:zipfile) { "#{$fixture_path}/proquest_dissertations/etdadmin_upload_802744.zip" }
   let(:unzipped_dir) { zipfile.gsub('.zip', '') }
-  let(:metadata_xml) { File.join(unzipped_dir, 'Benetollo_princeton_0181D_13586_DATA.xml') }
+  let(:metadata_xml) { File.join(unzipped_dir, 'Vlasceanu_princeton_0181D_13621_DATA.xml') }
   let(:pd) { described_class.new(zipfile) }
-  let(:handle) { '88435/dsp01d504rk346' }
+  let(:handle) { '88435/dsp019880vr006' }
 
   before do
     FileUtils.rm_rf(unzipped_dir) if Dir.exist? unzipped_dir
@@ -28,8 +28,8 @@ RSpec.describe EtdTransformer::Proquest::Dissertation do
   end
 
   context 'extracting metadata' do
-    let(:title) { "Languages of Reproduction: Childbirth, Pain and Women's Consciousness in the Soviet Union and Italy (1946-1958)" }
-    let(:department) { "Comparative Literature" }
+    let(:title) { "Cognitive Processes Shaping Individual and Collective Belief Systems" }
+    let(:department) { "Psychology" }
 
     it "extracts the title" do
       expect(pd.title).to eq title

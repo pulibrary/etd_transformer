@@ -30,7 +30,7 @@ RSpec.describe EtdTransformer::DissertationsTransformer do
     end
 
     it "makes a proquest dissertation object for each dissertation" do
-      expect(transformer.dissertations.size).to eq 3
+      expect(transformer.dissertations.size).to eq 2
     end
   end
 end
