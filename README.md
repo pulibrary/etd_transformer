@@ -23,7 +23,7 @@ Vireo exports for a single department or program, and an empty output directory.
 Example:
 
 ```
-thor etd_transformer:cli:process --input spec/fixtures/mock-downloads/German --output /tmp/2021_theses
+thor etd_transformer:cli:process_theses --input spec/fixtures/mock-downloads/German --output /tmp/2021_theses
 ```
 
 ## Object structure
