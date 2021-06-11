@@ -7,10 +7,7 @@ module EtdTransformer
     class CollectionMapper
       attr_reader :department_name, :xml_file, :mapper
 
-      # TODO: this generates the mapper for everyone. It shouldn't accept a department_name
-      # We care only about the mapper.
-      def initialize(department_name)
-        @department_name = department_name
+      def initialize
         @xml_file_path = xml_file_path
         @mapper = generate_collection_mapper
       end
