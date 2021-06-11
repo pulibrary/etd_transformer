@@ -10,6 +10,7 @@ require 'etd_transformer/senior_theses_transformer'
 require 'etd_transformer/dissertations_transformer'
 require 'etd_transformer/embargo_data_point'
 require 'etd_transformer/proquest/dissertation'
+require 'etd_transformer/proquest/collection_mapper'
 
 ##
 # Transform Princeton senior theses (a.k.a. ETDs -- electronic theses and dissertations).
