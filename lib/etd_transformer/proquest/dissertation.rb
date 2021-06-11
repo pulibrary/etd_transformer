@@ -43,6 +43,13 @@ module EtdTransformer
       end
 
       ##
+      # Map the department to the handle
+      def handle
+        mapper = EtdTransformer::Proquest::CollectionMapper.new.mapper
+        mapper[department]
+      end
+
+      ##
       # Unzip the zipfile
       def extract_zip
         FileUtils.mkdir_p(dir)
