@@ -3,6 +3,7 @@
 RSpec.describe EtdTransformer::Proquest::Dissertation do
   let(:zipfile) { "#{$fixture_path}/proquest_dissertations/etdadmin_upload_790987.zip" }
   let(:unzipped_dir) { zipfile.gsub('.zip', '') }
+  let(:metadata_xml) { File.join(unzipped_dir, 'Benetollo_princeton_0181D_13586_DATA.xml') }
   let(:pd) { described_class.new(zipfile) }
 
   before do
@@ -21,7 +22,14 @@ RSpec.describe EtdTransformer::Proquest::Dissertation do
     expect(File.directory?(unzipped_dir)).to eq true
   end
 
-  xit "has a metadata xml file" do
-    expect(pd.metadata).to be_instance_of Nokogiri::Doc
+  it "has a metadata xml file" do
+    expect(pd.metadata_xml).to eq metadata_xml
+  end
+
+  context 'extracting metadata' do
+    let(:title) { "Languages of Reproduction: Childbirth, Pain and Women's Consciousness in the Soviet Union and Italy (1946-1958)" }
+    it "extracts the title" do
+      expect(pd.title).to eq title
+    end
   end
 end
