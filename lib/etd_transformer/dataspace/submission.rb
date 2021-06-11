@@ -20,7 +20,7 @@ module EtdTransformer
       end
 
       def directory_path
-        File.join(@dataspace_import.dataspace_import_directory, "submission_#{@id}")
+        File.join(@dataspace_import.output_dir, "submission_#{@id}")
       end
 
       ##

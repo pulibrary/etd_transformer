@@ -1,28 +1,21 @@
 # frozen_string_literal: true
 
 RSpec.describe EtdTransformer::Dataspace::Import do
-  let(:di_department_name) { 'German' }
-  let(:input_dir) { "#{$fixture_path}/mock-downloads/German" }
-  let(:output_dir) { "#{$fixture_path}/exports" }
-  let(:di) { described_class.new(output_dir, di_department_name) }
-
-  it 'has a department' do
-    expect(di).to be_instance_of(described_class)
-    expect(di.department_name).to eq di_department_name
-  end
+  let(:output_dir) { "#{$fixture_path}/exports/German" }
+  let(:di) { described_class.new(output_dir) }
 
   it 'has a directory where files are written' do
-    expect(di.dataspace_import_directory).to eq "#{output_dir}/#{di_department_name}"
+    expect(di.output_dir).to eq output_dir
   end
 
   context 'filesystem setup' do
     before do
-      FileUtils.rm_rf(Dir["#{output_dir}/*"])
+      FileUtils.rm_rf output_dir
     end
     it 'sets up directory for writing' do
-      expect(File.directory?("#{output_dir}/#{di_department_name}")).to eq false
+      expect(File.directory?(output_dir)).to eq false
       di.setup_filesystem
-      expect(File.directory?("#{output_dir}/#{di_department_name}")).to eq true
+      expect(File.directory?(output_dir)).to eq true
     end
   end
 end

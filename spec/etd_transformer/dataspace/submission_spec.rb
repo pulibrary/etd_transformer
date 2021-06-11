@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 RSpec.describe EtdTransformer::Dataspace::Submission do
-  let(:di_department_name) { 'German' }
-  let(:output_dir) { "#{$fixture_path}/exports" }
-  let(:di) { EtdTransformer::Dataspace::Import.new(output_dir, di_department_name) }
+  let(:department_name) { 'German' }
+  let(:output_dir) { "#{$fixture_path}/exports/#{department_name}" }
+  let(:di) { EtdTransformer::Dataspace::Import.new(output_dir) }
   let(:ds) { described_class.new(di, '8234') }
   let(:vireo_export) { EtdTransformer::Vireo::Export.new("#{$fixture_path}/mock-downloads/German") }
 
@@ -17,7 +17,7 @@ RSpec.describe EtdTransformer::Dataspace::Submission do
     expect(ds.id).to eq '8234'
   end
   it 'makes a directory for itself' do
-    expect(ds.directory_path).to eq "#{di.output_dir}/#{di_department_name}/submission_#{ds.id}"
+    expect(ds.directory_path).to eq "#{di.output_dir}/submission_#{ds.id}"
   end
 
   context 'dublin_core.xml' do
@@ -69,9 +69,9 @@ RSpec.describe EtdTransformer::Dataspace::Submission do
       expect(ds.metadata_pu).to be_instance_of(Nokogiri::XML::Builder)
     end
     it 'writes the department' do
-      ds.department = di_department_name
+      ds.department = department_name
       pu_department = ds.metadata_pu.doc.xpath('//dcvalue[@element="department"]').text
-      expect(pu_department).to eq di_department_name
+      expect(pu_department).to eq department_name
     end
     it 'writes the classyear' do
       classyear = '1999'
