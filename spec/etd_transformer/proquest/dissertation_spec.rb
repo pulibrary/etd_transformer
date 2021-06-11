@@ -5,6 +5,7 @@ RSpec.describe EtdTransformer::Proquest::Dissertation do
   let(:unzipped_dir) { zipfile.gsub('.zip', '') }
   let(:metadata_xml) { File.join(unzipped_dir, 'Benetollo_princeton_0181D_13586_DATA.xml') }
   let(:pd) { described_class.new(zipfile) }
+  let(:handle) { '88435/dsp01d504rk346' }
 
   before do
     FileUtils.rm_rf(unzipped_dir) if Dir.exist? unzipped_dir
@@ -28,8 +29,18 @@ RSpec.describe EtdTransformer::Proquest::Dissertation do
 
   context 'extracting metadata' do
     let(:title) { "Languages of Reproduction: Childbirth, Pain and Women's Consciousness in the Soviet Union and Italy (1946-1958)" }
+    let(:department) { "Comparative Literature" }
+
     it "extracts the title" do
       expect(pd.title).to eq title
     end
+
+    it "extracts the department" do
+      expect(pd.department).to eq department
+    end
+  end
+
+  it 'maps the department to the correct handle' do
+    expect(pd.handle).to eq handle
   end
 end
