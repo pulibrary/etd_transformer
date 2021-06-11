@@ -28,8 +28,14 @@ RSpec.describe EtdTransformer::Proquest::Dissertation do
 
   context 'extracting metadata' do
     let(:title) { "Languages of Reproduction: Childbirth, Pain and Women's Consciousness in the Soviet Union and Italy (1946-1958)" }
+    let(:department) { "Comparative Literature" }
+
     it "extracts the title" do
       expect(pd.title).to eq title
+    end
+
+    it "extracts the department" do 
+      expect(pd.department).to eq department
     end
   end
 end

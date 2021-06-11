@@ -31,6 +31,12 @@ module EtdTransformer
       end
 
       ##
+      # Get the department from the XML
+      def department
+        metadata.xpath('//DISS_submission//DISS_institution//DISS_inst_contact').text
+      end
+
+      ##
       # Parse the metadata xml
       def metadata
         @metadata ||= File.open(metadata_xml) { |f| Nokogiri::XML(f) }
