@@ -5,7 +5,7 @@ require 'pdf-reader'
 RSpec.describe EtdTransformer::SeniorThesesTransformer do
   let(:input_dir) { "#{$fixture_path}/mock-downloads/#{department_name}" }
   let(:department_name) { 'German' }
-  let(:output_dir) { "#{$fixture_path}/exports" }
+  let(:output_dir) { "#{$fixture_path}/exports/#{department_name}" }
   let(:embargo_spreadsheet) { "#{$fixture_path}/mock-downloads/embargo_spreadsheet_with_netids.xlsx" }
   let(:collection_handle) { '88435/dsp013n203z151' }
   let(:options) do
@@ -35,7 +35,7 @@ RSpec.describe EtdTransformer::SeniorThesesTransformer do
     end
     it 'has a dataspace import' do
       expect(transformer.dataspace_import).to be_instance_of(EtdTransformer::Dataspace::Import)
-      expect(transformer.dataspace_import.dataspace_import_directory).to eq "#{output_dir}/German"
+      expect(transformer.dataspace_import.output_dir).to eq output_dir
     end
     it 'creates the output_dir if it does not exist yet' do
       expect(Dir.exist?(output_dir)).to eq false
@@ -55,18 +55,18 @@ RSpec.describe EtdTransformer::SeniorThesesTransformer do
   context 'transforming a department' do
     let(:expected_submission_directories) do
       [
-        File.join(output_dir, department_name, 'submission_8234'),
-        File.join(output_dir, department_name, 'submission_8286'),
-        File.join(output_dir, department_name, 'submission_8543'),
-        File.join(output_dir, department_name, 'submission_8658'),
-        File.join(output_dir, department_name, 'submission_8789'),
-        File.join(output_dir, department_name, 'submission_8963')
+        File.join(output_dir, 'submission_8234'),
+        File.join(output_dir, 'submission_8286'),
+        File.join(output_dir, 'submission_8543'),
+        File.join(output_dir, 'submission_8658'),
+        File.join(output_dir, 'submission_8789'),
+        File.join(output_dir, 'submission_8963')
       ]
     end
     it 'makes a directory for every approved submission' do
-      expect(Dir.glob("#{transformer.dataspace_import.dataspace_import_directory}/**")).to eq []
+      expect(Dir.glob("#{transformer.dataspace_import.output_dir}/**")).to eq []
       transformer.dataspace_submissions
-      dirs_on_disk = Dir.glob("#{transformer.dataspace_import.dataspace_import_directory}/**")
+      dirs_on_disk = Dir.glob("#{transformer.dataspace_import.output_dir}/**")
       expect(dirs_on_disk.size).to eq expected_submission_directories.size
       expect(dirs_on_disk & expected_submission_directories == dirs_on_disk).to eq true
     end
