@@ -37,6 +37,12 @@ module EtdTransformer
       end
 
       ##
+      # Get the embargo date from the XML
+      def embargo_date
+        metadata.xpath('').text
+      end
+
+      ##
       # Parse the metadata xml
       def metadata
         @metadata ||= File.open(metadata_xml) { |f| Nokogiri::XML(f) }

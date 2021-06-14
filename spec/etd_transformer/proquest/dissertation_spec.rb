@@ -30,6 +30,7 @@ RSpec.describe EtdTransformer::Proquest::Dissertation do
   context 'extracting metadata' do
     let(:title) { "Cognitive Processes Shaping Individual and Collective Belief Systems" }
     let(:department) { "Psychology" }
+    let(:embargo_date) {}
 
     it "extracts the title" do
       expect(pd.title).to eq title
@@ -37,6 +38,10 @@ RSpec.describe EtdTransformer::Proquest::Dissertation do
 
     it "extracts the department" do
       expect(pd.department).to eq department
+    end
+
+    it "extracts the embargo date and formats properly" do
+      expect(pd.embargo_date).to eq '2023-05-24'
     end
   end
 
