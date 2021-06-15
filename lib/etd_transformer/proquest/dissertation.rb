@@ -39,8 +39,10 @@ module EtdTransformer
       ##
       # Get the embargo date from the XML
       def embargo_date
-        
-        metadata.xpath('*//DISS_sales_restriction')[0].attributes["remove"].value
+        restriction_a = metadata.xpath('*//DISS_sales_restriction')
+        if !restriction_a.empty?
+          return restriction_a[0].attributes["remove"].value
+        end
       end
 
       ##

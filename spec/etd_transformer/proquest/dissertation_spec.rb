@@ -45,6 +45,20 @@ RSpec.describe EtdTransformer::Proquest::Dissertation do
     end
   end
 
+  context 'no embargo' do
+    let(:zipfile) {"#{$fixture_path}/proquest_dissertations/etdadmin_upload_796867.zip"}
+    let(:pd) { described_class.new(zipfile) }
+
+    it 'correctly returns nil when no embargo tag is in the xml' do
+      expect(pd.embargo_date).to be_nil
+    end
+
+    xit 'no pu metadata file is generated when no embargo is included' do
+      
+    end
+  end
+
+
   it 'maps the department to the correct handle' do
     expect(pd.handle).to eq handle
   end
