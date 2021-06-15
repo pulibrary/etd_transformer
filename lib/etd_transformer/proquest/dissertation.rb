@@ -41,7 +41,8 @@ module EtdTransformer
       def embargo_date
         restriction_a = metadata.xpath('*//DISS_sales_restriction')
         if !restriction_a.empty?
-          return restriction_a[0].attributes["remove"].value
+          mm_dd_yyyy_embargo = restriction_a[0].attributes["remove"].value
+          return Date.strptime(mm_dd_yyyy_embargo, '%m/%d/%Y').to_s
         end
       end
 
