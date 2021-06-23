@@ -45,12 +45,53 @@ RSpec.describe EtdTransformer::Proquest::Dissertation do
       expect(pd.title).to eq title
     end
 
+    it "#abstract" do
+      expect(pd.abstract).to match(/^Misinformation spread is among the top threats/)
+    end
+
+    it "#advisor" do
+      expect(pd.advisor).to eq "Alin Coman"
+    end
+
+    it "#accept_date" do
+      expect(pd.accept_date).to eq "2021-01-01"
+    end
+
+    it "#comp_date" do
+      expect(pd.comp_date).to eq "2021"
+    end
+
+    it "#iso_language" do
+      expect(pd.iso_language).to eq "en"
+    end
+
     it "extracts the department" do
       expect(pd.department).to eq department
     end
 
     it "extracts the embargo date and formats properly" do
       expect(pd.embargo_date).to eq embargo_date
+    end
+
+    it 'maps the department to the correct handle' do
+      expect(pd.handle).to eq handle
+    end
+
+    context "keywords" do
+      let(:zipfile) { "#{$fixture_path}/proquest_dissertations/etdadmin_upload_796867.zip" }
+      let(:expected_keywords) do
+        [
+          'Commensurability Oscillations',
+          'Fractional Quantum Hall Effect',
+          'Gallium Arsenide',
+          'Indium Arsenide',
+          'Quantum Well',
+          'Wigner Crystal'
+        ]
+      end
+      it "separates keywords" do
+        expect(pd.keywords).to eq(expected_keywords)
+      end
     end
   end
 
@@ -70,9 +111,5 @@ RSpec.describe EtdTransformer::Proquest::Dissertation do
 
     xit 'no pu metadata file is generated when no embargo is included' do
     end
-  end
-
-  it 'maps the department to the correct handle' do
-    expect(pd.handle).to eq handle
   end
 end
