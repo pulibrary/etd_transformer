@@ -44,13 +44,26 @@ module EtdTransformer
             xml.dcvalue(element: 'language', qualifier: 'iso') do
               xml.text iso_language
             end
-            xml.dcvalue(element: 'type') do
-              xml.text "Academic dissertations (Ph.D.)"
-            end
             keywords.each do |keyword|
               xml.dcvalue(element: 'subject', qualifier: 'none') do
                 xml.text keyword
               end
+            end
+            subjects.each do |subject|
+              xml.dcvalue(element: 'subject', qualifier: 'classification') do
+                xml.text subject
+              end
+            end
+            xml.dcvalue(element: 'type') do
+              xml.text "Academic dissertations (#{degree})"
+            end
+            xml.dcvalue(element: 'relation', qualifier: 'isformatof') do
+              xml.cdata "The Mudd Manuscript Library retains one bound
+              copy of each dissertation.  Search for these copies in the library's
+              main catalog: <a href=http://catalog.princeton.edu>catalog.princeton.edu</a>"
+            end
+            xml.dcvalue(element: 'publisher') do
+              xml.text "Princeton, NJ : Princeton University"
             end
           end
         end
@@ -106,6 +119,10 @@ module EtdTransformer
         format_name(metadata.xpath('/DISS_submission/DISS_authorship/DISS_author/DISS_name'))
       end
 
+      def degree
+        metadata.xpath('//DISS_degree').text.strip
+      end
+
       def iso_language
         metadata.xpath('//DISS_language').text
       end
@@ -119,6 +136,17 @@ module EtdTransformer
           keyword_element.text.split(",").each do |k|
             words << k.strip
           end
+        end
+        words
+      end
+
+      ##
+      # Return an array of subjects
+      def subjects
+        words = []
+        subject_elements = metadata.xpath('//DISS_categorization/DISS_category/DISS_cat_desc')
+        subject_elements.each do |subject_element|
+          words << subject_element.text.strip
         end
         words
       end
