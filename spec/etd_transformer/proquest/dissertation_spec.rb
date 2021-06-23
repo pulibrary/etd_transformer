@@ -29,8 +29,17 @@ RSpec.describe EtdTransformer::Proquest::Dissertation do
 
   context 'extracting metadata' do
     let(:title) { "Cognitive Processes Shaping Individual and Collective Belief Systems" }
+    let(:author) { "Madalina Vlasceanu" }
     let(:department) { "Psychology" }
     let(:embargo_date) { '2023-05-24' }
+
+    it "has an id" do
+      expect(pd.id).to eq "802744"
+    end
+
+    it "extracts the author" do
+      expect(pd.author).to eq author
+    end
 
     it "extracts the title" do
       expect(pd.title).to eq title
@@ -42,6 +51,12 @@ RSpec.describe EtdTransformer::Proquest::Dissertation do
 
     it "extracts the embargo date and formats properly" do
       expect(pd.embargo_date).to eq embargo_date
+    end
+  end
+
+  context 'dublin_core' do
+    it "produces dublin_core" do
+      expect(pd.dublin_core).to be_instance_of(Nokogiri::XML::Builder)
     end
   end
 

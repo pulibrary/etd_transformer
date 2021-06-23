@@ -13,6 +13,7 @@ module EtdTransformer
     desc 'process_theses', 'Process vireo ETDs into DataSpace ETDs'
     def process_theses
       if all_required_thesis_options_present?
+        puts "Processing senior theses"
         output_options
         EtdTransformer::SeniorThesesTransformer.transform(options)
       else
@@ -27,8 +28,9 @@ module EtdTransformer
     desc 'process_dissertations', 'Process proquest ETDs into DataSpace ETDs'
     def process_dissertations
       if all_required_dissertation_options_present?
+        puts "Processing dissertations"
         output_options
-        # EtdTransformer::DissertationTransformer.transform(options)
+        EtdTransformer::DissertationsTransformer.transform(options)
       else
         output_help_message
       end
@@ -48,8 +50,8 @@ module EtdTransformer
       def output_options
         puts "Processing directory #{options[:input]}."
         puts "Output will be written to #{options[:output]}"
-        puts "Using embargo spreadsheet #{options[:embargo_spreadsheet]}"
-        puts "DataSpace import collection will be #{options[:collection_handle]}"
+        puts "Using embargo spreadsheet #{options[:embargo_spreadsheet]}" if options[:embargo_spreadsheet]
+        puts "DataSpace import collection will be #{options[:collection_handle]}" if options[:collection_handle]
       end
 
       def all_required_thesis_options_present?

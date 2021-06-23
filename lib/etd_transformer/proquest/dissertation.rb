@@ -13,6 +13,25 @@ module EtdTransformer
       end
 
       ##
+      # Produce an XML dublin core record suitable for ingest into DSpace
+      def dublin_core
+        builder = Nokogiri::XML::Builder.new(encoding: 'UTF-8') do |xml|
+          xml.dublin_core(schema: 'dc', encoding: 'UTF-8') do
+            xml.dcvalue(element: 'contributor', qualifier: 'author') do
+              xml.text author
+            end
+          end
+        end
+        builder
+      end
+
+      ##
+      # Use the id from the zipfile
+      def id
+        File.basename(@zipfile).split("_").last.split(".zip").first
+      end
+
+      ##
       # Full path to the metadata xml file
       def metadata_xml
         Dir["#{dir}/*DATA.xml"].first
@@ -28,6 +47,18 @@ module EtdTransformer
       # Get the title from the XML
       def title
         metadata.xpath('/DISS_submission/DISS_description/DISS_title').text
+      end
+
+      ##
+      # Get the author from the XML
+      def author
+        fname = metadata.xpath('/DISS_submission/DISS_authorship/DISS_author/DISS_name/DISS_fname').text
+        middle = metadata.xpath('/DISS_submission/DISS_authorship/DISS_author/DISS_name/DISS_middle').text
+        surname = metadata.xpath('/DISS_submission/DISS_authorship/DISS_author/DISS_name/DISS_surname').text
+        suffix = metadata.xpath('/DISS_submission/DISS_authorship/DISS_author/DISS_name/DISS_suffix').text
+        names = [fname, middle, surname, suffix]
+        no_empty_names = names.reject(&:empty?)
+        no_empty_names.join(' ').squeeze(" ").strip
       end
 
       ##
