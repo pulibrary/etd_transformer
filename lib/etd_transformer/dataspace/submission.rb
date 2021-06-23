@@ -39,6 +39,13 @@ module EtdTransformer
       end
 
       ##
+      # Given a snippet of dublin core xml, write it to the expected file
+      # @param [String] An XML serialization of dublin core
+      def write_dublin_core_from_xml(dublin_core_xml)
+        File.write(dublin_core_file_path, dublin_core_xml)
+      end
+
+      ##
       # Create a metadata_pu XML document
       # @example
       #   <dublin_core encoding="utf-8" schema="pu">

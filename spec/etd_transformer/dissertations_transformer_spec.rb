@@ -5,6 +5,7 @@ require 'pdf-reader'
 RSpec.describe EtdTransformer::DissertationsTransformer do
   let(:input_dir) { "#{$fixture_path}/proquest_dissertations" }
   let(:output_dir) { "#{$fixture_path}/proquest_dissertations_export" }
+  let(:transformed_diss_dir) { File.join(output_dir, 'submission_796867') }
   let(:options) do
     {
       input: input_dir,
@@ -31,6 +32,21 @@ RSpec.describe EtdTransformer::DissertationsTransformer do
 
     it "makes a proquest dissertation object for each dissertation" do
       expect(transformer.dissertations.size).to eq 2
+      expect(Dir.exist?(transformed_diss_dir)).to eq false
+      described_class.transform(options)
+      expect(Dir.exist?(transformed_diss_dir)).to eq true
+    end
+  end
+
+  context 'dublin_core.xml' do
+    let(:expected_dc_file) { File.join(transformed_diss_dir, 'dublin_core.xml') }
+    before do
+      FileUtils.rm_rf(expected_dc_file) if File.exist? expected_dc_file
+    end
+    it 'writes a dublin core metadata file to the expected location' do
+      expect(File.exist?(expected_dc_file)).to eq false
+      described_class.transform(options)
+      expect(File.exist?(expected_dc_file)).to eq true
     end
   end
 end
