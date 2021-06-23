@@ -65,10 +65,10 @@ module EtdTransformer
         FileUtils.mkdir_p(dir)
 
         Zip::File.open(@zipfile) do |zip_file|
-          zip_file.each do |f|
-            fpath = File.join(dir, f.name)
+          zip_file.each do |file|
+            fpath = File.join(dir, file.name)
             FileUtils.mkdir_p(File.dirname(fpath))
-            zip_file.extract(f, fpath) unless File.exist?(fpath)
+            zip_file.extract(file, fpath) unless File.exist?(fpath)
           end
         end
       end
