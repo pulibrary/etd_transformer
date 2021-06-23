@@ -61,6 +61,10 @@ RSpec.describe EtdTransformer::Proquest::Dissertation do
       expect(pd.comp_date).to eq "2021"
     end
 
+    it "#degree" do
+      expect(pd.degree).to eq "Ph.D."
+    end
+
     it "#iso_language" do
       expect(pd.iso_language).to eq "en"
     end
@@ -89,8 +93,18 @@ RSpec.describe EtdTransformer::Proquest::Dissertation do
           'Wigner Crystal'
         ]
       end
+      let(:expected_subjects) do
+        [
+          'Condensed matter physics',
+          'Low temperature physics',
+          'Materials Science'
+        ]
+      end
       it "separates keywords" do
         expect(pd.keywords).to eq(expected_keywords)
+      end
+      it "has subjects" do
+        expect(pd.subjects).to eq(expected_subjects)
       end
     end
   end
