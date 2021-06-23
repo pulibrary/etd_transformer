@@ -37,6 +37,16 @@ module EtdTransformer
       end
 
       ##
+      # Get the embargo date from the XML
+      def embargo_date
+        restriction_a = metadata.xpath('*//DISS_sales_restriction')
+        return if restriction_a.empty?
+
+        mm_dd_yyyy_embargo = restriction_a[0].attributes["remove"].value
+        Date.strptime(mm_dd_yyyy_embargo, '%m/%d/%Y').to_s
+      end
+
+      ##
       # Parse the metadata xml
       def metadata
         @metadata ||= File.open(metadata_xml) { |f| Nokogiri::XML(f) }
@@ -55,10 +65,10 @@ module EtdTransformer
         FileUtils.mkdir_p(dir)
 
         Zip::File.open(@zipfile) do |zip_file|
-          zip_file.each do |f|
-            fpath = File.join(dir, f.name)
+          zip_file.each do |file|
+            fpath = File.join(dir, file.name)
             FileUtils.mkdir_p(File.dirname(fpath))
-            zip_file.extract(f, fpath) unless File.exist?(fpath)
+            zip_file.extract(file, fpath) unless File.exist?(fpath)
           end
         end
       end

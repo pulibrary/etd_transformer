@@ -30,6 +30,7 @@ RSpec.describe EtdTransformer::Proquest::Dissertation do
   context 'extracting metadata' do
     let(:title) { "Cognitive Processes Shaping Individual and Collective Belief Systems" }
     let(:department) { "Psychology" }
+    let(:embargo_date) { '2023-05-24' }
 
     it "extracts the title" do
       expect(pd.title).to eq title
@@ -37,6 +38,22 @@ RSpec.describe EtdTransformer::Proquest::Dissertation do
 
     it "extracts the department" do
       expect(pd.department).to eq department
+    end
+
+    it "extracts the embargo date and formats properly" do
+      expect(pd.embargo_date).to eq embargo_date
+    end
+  end
+
+  context 'no embargo' do
+    let(:zipfile) { "#{$fixture_path}/proquest_dissertations/etdadmin_upload_796867.zip" }
+    let(:pd) { described_class.new(zipfile) }
+
+    it 'correctly returns nil when no embargo tag is in the xml' do
+      expect(pd.embargo_date).to be_nil
+    end
+
+    xit 'no pu metadata file is generated when no embargo is included' do
     end
   end
 
