@@ -64,7 +64,9 @@ module EtdTransformer
       # manifest of all files DSpace should import, and actually move those files
       # @param [EtdTransformer::Proquest::Dissertation] proquest_dissertation
       def write_contents(proquest_dissertation)
-        files = Dir.children(proquest_dissertation.dir).reject { |a| a =~ /_DATA.xml/ }
+        files = Dir.children(proquest_dissertation.dir)
+        files = files.reject { |a| a =~ /_DATA.xml/ }
+        files = files.select { |b| File.file? File.join(proquest_dissertation.dir, b) }
         files.each do |file|
           File.write(contents_file_path, file)
           origin_file_path = File.join(proquest_dissertation.dir, file)
