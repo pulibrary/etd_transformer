@@ -87,9 +87,9 @@ module EtdTransformer
               xml.text "Academic dissertations (#{degree})"
             end
             xml.dcvalue(element: 'relation', qualifier: 'isformatof') do
-              xml.cdata "The Mudd Manuscript Library retains one bound
-              copy of each dissertation.  Search for these copies in the library's
-              main catalog: <a href=http://catalog.princeton.edu>catalog.princeton.edu</a>"
+              xml.text "The Mudd Manuscript Library retains one bound copy of
+              each dissertation.  Search for these copies in the library's main
+              catalog: <a href=http://catalog.princeton.edu>catalog.princeton.edu</a>"
             end
             xml.dcvalue(element: 'publisher') do
               xml.text "Princeton, NJ : Princeton University"
