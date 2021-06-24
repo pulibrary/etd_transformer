@@ -49,4 +49,16 @@ RSpec.describe EtdTransformer::DissertationsTransformer do
       expect(File.exist?(expected_dc_file)).to eq true
     end
   end
+
+  context 'metadata_pu.xml' do
+    let(:expected_pu_file) { File.join(transformed_diss_dir, 'metadata_pu.xml') }
+    before do
+      FileUtils.rm_rf(expected_pu_file) if File.exist? expected_pu_file
+    end
+    it 'writes a metadata_pu.xml file to the expected location' do
+      expect(File.exist?(expected_pu_file)).to eq false
+      described_class.transform(options)
+      expect(File.exist?(expected_pu_file)).to eq true
+    end
+  end
 end

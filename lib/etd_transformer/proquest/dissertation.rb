@@ -13,6 +13,32 @@ module EtdTransformer
       end
 
       ##
+      # Create a metadata_pu XML document
+      # @example
+      #   <dublin_core encoding="utf-8" schema="pu">
+      #     <dcvalue element="date" qualifier="classyear">2020</dcvalue>
+      #     <dcvalue element="embargo" qualifier="terms">2023-01-03</dcvalue>
+      #   </dublin_core>
+      def metadata_pu
+        builder = Nokogiri::XML::Builder.new(encoding: 'UTF-8') do |xml|
+          xml.dublin_core(schema: 'pu', encoding: 'UTF-8') do
+            xml.dcvalue(element: 'date', qualifier: 'classyear') do
+              xml.text comp_date
+            end
+            xml.dcvalue(element: 'department') do
+              xml.text department
+            end
+            if embargo_date
+              xml.dcvalue(element: 'embargo', qualifier: 'terms') do
+                xml.text embargo_date
+              end
+            end
+          end
+        end
+        builder
+      end
+
+      ##
       # Produce an XML dublin core record suitable for ingest into DSpace
       def dublin_core
         builder = Nokogiri::XML::Builder.new(encoding: 'UTF-8') do |xml|
