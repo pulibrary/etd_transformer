@@ -46,8 +46,8 @@ module EtdTransformer
       end
 
       ##
-      # Given a snippet of dublin core xml, write it to the expected file
-      # @param [String] An XML serialization of dublin core
+      # Given a snippet of xml, write it to the expected file
+      # @param [String] An XML serialization of metadata_pu
       def write_metadata_pu_from_xml(metadata_pu_xml)
         File.write(metadata_pu_path, metadata_pu_xml)
       end

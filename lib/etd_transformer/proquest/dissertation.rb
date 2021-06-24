@@ -32,6 +32,9 @@ module EtdTransformer
               xml.dcvalue(element: 'embargo', qualifier: 'terms') do
                 xml.text embargo_date
               end
+              xml.dcvalue(element: 'embargo', qualifier: 'lift') do
+                xml.text embargo_date
+              end
             end
           end
         end
