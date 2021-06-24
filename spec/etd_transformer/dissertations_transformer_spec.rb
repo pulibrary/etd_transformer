@@ -61,7 +61,7 @@ RSpec.describe EtdTransformer::DissertationsTransformer do
       expect(File.exist?(expected_pu_file)).to eq true
     end
   end
-  
+
   context 'collections file' do
     let(:expected_collections_file) { File.join(transformed_diss_dir, 'collections') }
     before do
