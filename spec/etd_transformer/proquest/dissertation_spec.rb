@@ -29,7 +29,7 @@ RSpec.describe EtdTransformer::Proquest::Dissertation do
 
   context 'extracting metadata' do
     let(:title) { "Cognitive Processes Shaping Individual and Collective Belief Systems" }
-    let(:author) { "Madalina Vlasceanu" }
+    let(:author) { "Vlasceanu, Madalina" }
     let(:department) { "Psychology" }
     let(:embargo_date) { '2023-05-24' }
 
@@ -50,7 +50,7 @@ RSpec.describe EtdTransformer::Proquest::Dissertation do
     end
 
     it "#advisor" do
-      expect(pd.advisor).to eq "Alin Coman"
+      expect(pd.advisor).to eq "Coman, Alin"
     end
 
     it "#accept_date" do
