@@ -33,15 +33,15 @@ RSpec.describe EtdTransformer::Proquest::Dissertation do
     let(:department) { "Psychology" }
     let(:embargo_date) { '2023-05-24' }
 
-    it "has an id" do
+    it "#id" do
       expect(pd.id).to eq "802744"
     end
 
-    it "extracts the author" do
+    it "#author" do
       expect(pd.author).to eq author
     end
 
-    it "extracts the title" do
+    it "#title" do
       expect(pd.title).to eq title
     end
 
@@ -109,9 +109,12 @@ RSpec.describe EtdTransformer::Proquest::Dissertation do
     end
   end
 
-  context 'dublin_core' do
+  context 'metadata' do
     it "produces dublin_core" do
       expect(pd.dublin_core).to be_instance_of(Nokogiri::XML::Builder)
+    end
+    it "produces metadata_pu" do
+      expect(pd.metadata_pu).to be_instance_of(Nokogiri::XML::Builder)
     end
   end
 
@@ -119,11 +122,8 @@ RSpec.describe EtdTransformer::Proquest::Dissertation do
     let(:zipfile) { "#{$fixture_path}/proquest_dissertations/etdadmin_upload_796867.zip" }
     let(:pd) { described_class.new(zipfile) }
 
-    it 'correctly returns nil when no embargo tag is in the xml' do
+    it 'returns nil when no embargo tag is in the xml' do
       expect(pd.embargo_date).to be_nil
-    end
-
-    xit 'no pu metadata file is generated when no embargo is included' do
     end
   end
 end

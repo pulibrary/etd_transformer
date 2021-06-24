@@ -23,6 +23,7 @@ module EtdTransformer
     # Transform a given ProQuestDissertation into a specific DataSpaceSubmission
     def transform(proquest_dissertation, dataspace_submission)
       dataspace_submission.write_dublin_core_from_xml(proquest_dissertation.dublin_core.to_xml)
+      dataspace_submission.write_metadata_pu_from_xml(proquest_dissertation.metadata_pu.to_xml)
     end
 
     ##
