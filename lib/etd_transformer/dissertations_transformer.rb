@@ -24,6 +24,7 @@ module EtdTransformer
     def transform(proquest_dissertation, dataspace_submission)
       dataspace_submission.write_dublin_core_from_xml(proquest_dissertation.dublin_core.to_xml)
       dataspace_submission.write_metadata_pu_from_xml(proquest_dissertation.metadata_pu.to_xml)
+      dataspace_submission.write_collections_file(proquest_dissertation.handle)
     end
 
     ##

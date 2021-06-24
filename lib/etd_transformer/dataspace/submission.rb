@@ -53,6 +53,13 @@ module EtdTransformer
       end
 
       ##
+      # Given the handle of a collection, write it to a collections file
+      # @param [String] The handle of a DSpace collection
+      def write_collections_file(handle)
+        File.write(collections_file_path, handle)
+      end
+
+      ##
       # Create a metadata_pu XML document
       # @example
       #   <dublin_core encoding="utf-8" schema="pu">
@@ -103,6 +110,10 @@ module EtdTransformer
 
       def dublin_core_file_path
         File.join(directory_path, 'dublin_core.xml')
+      end
+
+      def collections_file_path
+        File.join(directory_path, 'collections')
       end
 
       ##
