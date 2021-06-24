@@ -61,4 +61,16 @@ RSpec.describe EtdTransformer::DissertationsTransformer do
       expect(File.exist?(expected_pu_file)).to eq true
     end
   end
+  
+  context 'collections file' do
+    let(:expected_collections_file) { File.join(transformed_diss_dir, 'collections') }
+    before do
+      FileUtils.rm_rf(expected_collections_file) if File.exist? expected_collections_file
+    end
+    it 'writes a collections file to the expected location' do
+      expect(File.exist?(expected_collections_file)).to eq false
+      described_class.transform(options)
+      expect(File.exist?(expected_collections_file)).to eq true
+    end
+  end
 end
