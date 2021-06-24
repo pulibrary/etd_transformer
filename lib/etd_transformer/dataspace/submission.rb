@@ -60,6 +60,20 @@ module EtdTransformer
       end
 
       ##
+      # Given a ProQuest dissertation object, construct a contents file with a
+      # manifest of all files DSpace should import, and actually move those files
+      # @param [EtdTransformer::Proquest::Dissertation] proquest_dissertation
+      def write_contents(proquest_dissertation)
+        files = Dir.children(proquest_dissertation.dir).reject { |a| a =~ /_DATA.xml/ }
+        files.each do |file|
+          File.write(contents_file_path, file)
+          origin_file_path = File.join(proquest_dissertation.dir, file)
+          destination_file_path = File.join(directory_path, file)
+          FileUtils.cp(origin_file_path, destination_file_path)
+        end
+      end
+
+      ##
       # Create a metadata_pu XML document
       # @example
       #   <dublin_core encoding="utf-8" schema="pu">
@@ -114,6 +128,10 @@ module EtdTransformer
 
       def collections_file_path
         File.join(directory_path, 'collections')
+      end
+
+      def contents_file_path
+        File.join(directory_path, 'contents')
       end
 
       ##

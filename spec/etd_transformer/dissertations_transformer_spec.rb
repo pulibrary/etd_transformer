@@ -73,4 +73,20 @@ RSpec.describe EtdTransformer::DissertationsTransformer do
       expect(File.exist?(expected_collections_file)).to eq true
     end
   end
+
+  context 'contents file and payload' do
+    let(:expected_contents_file) { File.join(transformed_diss_dir, 'contents') }
+    let(:expected_payload_file) { File.join(transformed_diss_dir, 'Ma_princeton_0181D_13607.pdf') }
+    before do
+      FileUtils.rm_rf(expected_contents_file) if File.exist? expected_contents_file
+      FileUtils.rm_rf(expected_payload_file) if File.exist? expected_payload_file
+    end
+    it 'writes contents and payload to the expected location' do
+      expect(File.exist?(expected_contents_file)).to eq false
+      expect(File.exist?(expected_payload_file)).to eq false
+      described_class.transform(options)
+      expect(File.exist?(expected_contents_file)).to eq true
+      expect(File.exist?(expected_payload_file)).to eq true
+    end
+  end
 end
