@@ -181,15 +181,14 @@ module EtdTransformer
       end
 
       ##
-      # Given a DISS_name element, format it as a string
+      # Given a DISS_name element, format it as a string: surname, fname middle suffix
       def format_name(diss_name_element)
         fname = diss_name_element.xpath('DISS_fname').text
         middle = diss_name_element.xpath('DISS_middle').text
         surname = diss_name_element.xpath('DISS_surname').text
         suffix = diss_name_element.xpath('DISS_suffix').text
-        names = [fname, middle, surname, suffix]
-        no_empty_names = names.reject(&:empty?)
-        no_empty_names.join(' ').squeeze(" ").strip
+        name = "#{surname}, #{fname} #{middle} #{suffix}"
+        name.squeeze(" ").strip
       end
 
       ##
