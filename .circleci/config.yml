@@ -20,4 +20,4 @@ jobs:
           command: bundle exec rubocop
       - run:
           name: rspec
-          command: COVERALLS_REPO_TOKEN=LjQsW62p5OrmY29lVXAPYaPl3QPFKDeqM bundle exec rspec spec
+          command: COVERALLS_REPO_TOKEN=$COVERALLS_REPO_TOKEN bundle exec rspec spec
