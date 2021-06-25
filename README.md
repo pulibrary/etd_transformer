@@ -1,10 +1,16 @@
-[![CircleCI](https://circleci.com/gh/pulibrary/vireo_transformation.svg?style=shield)](https://circleci.com/gh/pulibrary/vireo_transformation)
-[![Coverage Status](https://coveralls.io/repos/github/pulibrary/vireo_transformation/badge.svg?branch=main)](https://coveralls.io/github/pulibrary/vireo_transformation?branch=main)
+[![CircleCI](https://circleci.com/gh/pulibrary/etd_transformer.svg?style=shield)](https://circleci.com/gh/pulibrary/etd_transformer)
+[![Coverage Status](https://coveralls.io/repos/github/pulibrary/etd_transformer/badge.svg?branch=main)](https://coveralls.io/github/pulibrary/etd_transformer?branch=main)
 
-# vireo_transformation
-Download theses from Vireo and transform them for Princeton long-term stewardship. It takes `VireoExport`s and turns them into `DspaceImport`s.
+# etd_transformer
+Transform theses for ingest into Princeton long-term data repository. This includes separate processes for:
+* Dissertations
+  * We get them from ProQuest and re-format them for DSpace ingest
+  * [Process documentation is available on the wiki](https://github.com/pulibrary/etd_transformer/wiki/How-to-process-dissertations).
+* Senior theses
+  * We get these from ThesisCentral and augment them (e.g., with embargo metadata)
+  * [Process documentation is available on the wiki](https://github.com/pulibrary/etd_transformer/wiki/How-to-process-senior-theses). 
 
-## Version
+## Software Versions
 * Ruby 2.6.5
 
 ## Pre-requisites
@@ -17,20 +23,15 @@ Download theses from Vireo and transform them for Princeton long-term stewardshi
 ## Running the tests
 rspec spec
 
-## Processing Vireo Exports
-We use a thor command line interface. You will need to specify an input directory that contains
-Vireo exports for a single department or program, and an empty output directory.
-Example:
-
-```
-thor etd_transformer:cli:process_theses --input spec/fixtures/mock-downloads/German --output /tmp/2021_theses
-```
 
 ## Object structure
 1. `EtdTransformer` - A top level module to organize things
-1. `EtdTransformer::Vireo` - A module for Vireo classes
 1. `EtdTransformer::DataSpace` - A module for DataSpace classes
-1. `EtdTransformer::Vireo::Submission` - A single thesis, with metadata, as received from Vireo
-1. `EtdTransformer::DataSpace::Submission` - A single thesis, with augmented metadata, ready for submission to DataSpace
+  1. `EtdTransformer::DataSpace::Submission` - A single thesis, with augmented metadata, ready for submission to DataSpace
+1. `EtdTransformer::Proquest` - A module for manipulating dissertation packages from ProQuest
+  1. `EtdTransformer::Proquest::Dissertation` - A single dissertation, as delivered from Proquest
+1. `EtdTransformer::Vireo` - A module for manipulating senior theses from Vireo (a.k.a ThesisCentral)
+  1. `EtdTransformer::Vireo::Export` - A department's worth of theses, it also contains extra data needed to process theses, like a spreadsheet containing embargo dates.
+  1. `EtdTransformer::Vireo::Submission` - A single thesis, with metadata, as received from Vireo
 
 ![](class_diagram.png)
