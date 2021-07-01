@@ -5,10 +5,10 @@
 Transform theses for ingest into Princeton long-term data repository. This includes separate processes for:
 * Dissertations
   * We get them from ProQuest and re-format them for DSpace ingest
-  * [Process documentation is available on the wiki](https://github.com/pulibrary/etd_transformer/wiki/How-to-process-dissertations).
+  * [Process documentation is available in `docs`](https://github.com/pulibrary/etd_transformer/blob/main/docs/process-dissertations.md).
 * Senior theses
   * We get these from ThesisCentral and augment them (e.g., with embargo metadata)
-  * [Process documentation is available on the wiki](https://github.com/pulibrary/etd_transformer/wiki/How-to-process-senior-theses). 
+  * [Process documentation is available in `docs`](https://github.com/pulibrary/etd_transformer/blob/main/docs/process-theses.md). 
 
 ## Software Versions
 * Ruby 2.6.5
