@@ -22,7 +22,7 @@ Options:
 ```
 
 ## 3. Upload and Import to DSpace
-1. Zip up the processed dissertations and upload them to the dataspace-dev server:
+Zip up the processed dissertations and upload them to the dataspace-dev server:
 
 ```
 
@@ -31,7 +31,7 @@ Options:
 % scp YYYYMMDD.tar.gz dspace@dataspace_dev:/home/dspace/dspace_imports/dissertations/2021/
 ```
 
-2. ssh to the dataspace box, ensure the file is in the right place, and unzip it.
+SSH to the Dataspace box, ensure the file is in the right place, and unzip it.
 
 ```
 % ssh dataspace_dev
@@ -40,7 +40,7 @@ dspace@gcp-dataspace-dev1:~ $ cd ~/dspace_imports/dissertations/2021
 dspace@gcp-dataspace-dev1:~/dspace_imports/dissertations/2021 $ tar zxvf YYYYMMDD.tar.gz
 ```
 
-3. import the files into dataspace:
+Import the files into Dataspace:
 
 ```
 /dspace/bin/dspace import -add --eperson bess.sadler@princeton.edu --source $HOME/dspace_imports/dissertations/2021/YYYYMMDD --mapfile $HOME/dspace_imports/dissertations/2021/YYYYMMDD.mapfile --workflow
@@ -51,8 +51,8 @@ dspace@gcp-dataspace-dev1:~/dspace_imports/dissertations/2021 $ tar zxvf YYYYMMD
 ### Troubleshooting
 
 When you import on dataspace-dev you might run into errors about it not being able to mint handles. You can fix the problem like this:
-1. On dataspace-dev, edit the file `/dspace/config/dspace.cfg`
-2. Edit the section on handles so it looks like this: This will enable minting of handles in TEST mode.
+* On dataspace-dev, edit the file `/dspace/config/dspace.cfg`
+* Edit the section on handles so it looks like this: This will enable minting of handles in TEST mode.
 
 ```
   # We have hijacked the Handle Prefix to indicate our ARK naming assigning authority
@@ -69,4 +69,4 @@ When you import on dataspace-dev you might run into errors about it not being ab
   ark.shoulder = fk4
 ```
 
-3. Run `dsrestart` to restart DSpace, then try the import again.
+* Run `dsrestart` to restart DSpace, then try the import again.
