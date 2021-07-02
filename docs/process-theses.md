@@ -36,25 +36,25 @@ Finished processing 9515
 ```
 
 ## 4. Upload to DSpace
-1. Zip up the processed theses and upload them to the dataspace-dev server:
+Zip up the processed theses and upload them to the dataspace-dev server:
 
-  ```
-  % cd /Users/bess/projects/2021-economics
-  % tar czvf economics.tar.gz economics
-  % scp economics.tar.gz dspace@gcp_dataspace_dev1:/home/dspace/dspace_imports/theses/2021
-  ```
+```
+% cd /Users/bess/projects/2021-economics
+% tar czvf economics.tar.gz economics
+% scp economics.tar.gz dspace@gcp_dataspace_dev1:/home/dspace/dspace_imports/theses/2021
+```
 
-2. ssh to the dataspace box, ensure the file is in the right place, and unzip it.
+SSH to the Dataspace box, ensure the file is in the right place, and unzip it.
 
-  ```
-  % ssh gcp_dataspace_dev1
-  pulsys@gcp-dataspace-dev1:~ $ sudo su dspace
-  dspace@gcp-dataspace-dev1:~ $ cd ~/dspace_imports/theses/2021
-  dspace@gcp-dataspace-dev1:~/dspace_imports/theses/2021 $ tar zxvf economics.tar.gz
-  ```
+```
+% ssh gcp_dataspace_dev1
+pulsys@gcp-dataspace-dev1:~ $ sudo su dspace
+dspace@gcp-dataspace-dev1:~ $ cd ~/dspace_imports/theses/2021
+dspace@gcp-dataspace-dev1:~/dspace_imports/theses/2021 $ tar zxvf economics.tar.gz
+```
 
-3. import the files into dataspace:
+Import the files into dataspace:
 
-  ```
-  /dspace/bin/dspace import -add --eperson bs3097@princeton.edu --source $HOME/dspace_imports/theses/2021/economics --mapfile $HOME/dspace_imports/theses/2021/economics.mapfile --workflow
-  ```
+```
+/dspace/bin/dspace import -add --eperson bs3097@princeton.edu --source $HOME/dspace_imports/theses/2021/economics --mapfile $HOME/dspace_imports/theses/2021/economics.mapfile --workflow
+```
