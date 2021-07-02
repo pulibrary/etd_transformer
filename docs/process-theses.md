@@ -8,7 +8,7 @@
 5. You should now have a directory full of DSpace Simple Archive formatted export packages, and an Excel spreadsheet. Put the spreadsheet in the folder full of that department's theses.
 
 ## 2. Get the embargo data from sharepoint
-Next, you'll need the spreadsheet that contains all of the embargo data. Follow these instructions to export the data from sharepoint: https://docs.google.com/document/d/1CFCGR8ry29Xv55kPiJLoUmGxTZ5dzx2YaU83pJSLVcg/edit
+Next, you'll need the spreadsheet that contains all of the embargo data. [Follow these instructions to export the data from sharepoint](https://docs.google.com/document/d/1CFCGR8ry29Xv55kPiJLoUmGxTZ5dzx2YaU83pJSLVcg/edit)
 Note that sharepoint only allows spreadsheet downloads from a Windows PC, so plan ahead for this.
 
 ## 3. Run the process
@@ -38,23 +38,23 @@ Finished processing 9515
 ## 4. Upload to DSpace
 1. Zip up the processed theses and upload them to the dataspace-dev server:
 
-```
-% cd /Users/bess/projects/2021-economics
-% tar czvf economics.tar.gz economics
-% scp economics.tar.gz dspace@gcp_dataspace_dev1:/home/dspace/dspace_imports/theses/2021
-```
+  ```
+  % cd /Users/bess/projects/2021-economics
+  % tar czvf economics.tar.gz economics
+  % scp economics.tar.gz dspace@gcp_dataspace_dev1:/home/dspace/dspace_imports/theses/2021
+  ```
 
 2. ssh to the dataspace box, ensure the file is in the right place, and unzip it.
 
-```
-% ssh gcp_dataspace_dev1
-pulsys@gcp-dataspace-dev1:~ $ sudo su dspace
-dspace@gcp-dataspace-dev1:~ $ cd ~/dspace_imports/theses/2021
-dspace@gcp-dataspace-dev1:~/dspace_imports/theses/2021 $ tar zxvf economics.tar.gz
-```
+  ```
+  % ssh gcp_dataspace_dev1
+  pulsys@gcp-dataspace-dev1:~ $ sudo su dspace
+  dspace@gcp-dataspace-dev1:~ $ cd ~/dspace_imports/theses/2021
+  dspace@gcp-dataspace-dev1:~/dspace_imports/theses/2021 $ tar zxvf economics.tar.gz
+  ```
 
 3. import the files into dataspace:
 
-```
-/dspace/bin/dspace import -add --eperson bs3097@princeton.edu --source $HOME/dspace_imports/theses/2021/economics --mapfile $HOME/dspace_imports/theses/2021/economics.mapfile --workflow
-```
+  ```
+  /dspace/bin/dspace import -add --eperson bs3097@princeton.edu --source $HOME/dspace_imports/theses/2021/economics --mapfile $HOME/dspace_imports/theses/2021/economics.mapfile --workflow
+  ```
