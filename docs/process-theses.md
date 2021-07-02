@@ -14,6 +14,7 @@ Note that sharepoint only allows spreadsheet downloads from a Windows PC, so pla
 ## 3. Run the process
 1. Download the `etd_transformer` code and follow the installation instructions in the README. 
 2. Invoke the script like this:
+
 ```
 % thor help etd_transformer:cli:process
 Usage:
@@ -36,6 +37,7 @@ Finished processing 9515
 
 ## 4. Upload to DSpace
 1. Zip up the processed theses and upload them to the dataspace-dev server:
+
 ```
 % cd /Users/bess/projects/2021-economics
 % tar czvf economics.tar.gz economics
@@ -43,6 +45,7 @@ Finished processing 9515
 ```
 
 2. ssh to the dataspace box, ensure the file is in the right place, and unzip it.
+
 ```
 % ssh gcp_dataspace_dev1
 pulsys@gcp-dataspace-dev1:~ $ sudo su dspace
@@ -51,6 +54,7 @@ dspace@gcp-dataspace-dev1:~/dspace_imports/theses/2021 $ tar zxvf economics.tar.
 ```
 
 3. import the files into dataspace:
+
 ```
 /dspace/bin/dspace import -add --eperson bs3097@princeton.edu --source $HOME/dspace_imports/theses/2021/economics --mapfile $HOME/dspace_imports/theses/2021/economics.mapfile --workflow
 ```

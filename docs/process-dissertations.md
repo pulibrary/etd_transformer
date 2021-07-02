@@ -8,6 +8,7 @@
 ## 2. Run the process
 1. Download the `etd_transformer` code and follow the installation instructions in the README. 
 2. Invoke the script like this:
+
 ```
 % thor help etd_transformer:cli:process_dissertations
 Usage:
@@ -22,6 +23,7 @@ Options:
 
 ## 3. Upload and Import to DSpace
 1. Zip up the processed dissertations and upload them to the dataspace-dev server:
+
 ```
 
 % cd /full/path/to/output/folder
@@ -30,6 +32,7 @@ Options:
 ```
 
 2. ssh to the dataspace box, ensure the file is in the right place, and unzip it.
+
 ```
 % ssh dataspace_dev
 pulsys@gcp-dataspace-dev1:~ $ sudo su dspace
@@ -38,6 +41,7 @@ dspace@gcp-dataspace-dev1:~/dspace_imports/dissertations/2021 $ tar zxvf YYYYMMD
 ```
 
 3. import the files into dataspace:
+
 ```
 /dspace/bin/dspace import -add --eperson bess.sadler@princeton.edu --source $HOME/dspace_imports/dissertations/2021/YYYYMMDD --mapfile $HOME/dspace_imports/dissertations/2021/YYYYMMDD.mapfile --workflow
 ```
@@ -49,6 +53,7 @@ dspace@gcp-dataspace-dev1:~/dspace_imports/dissertations/2021 $ tar zxvf YYYYMMD
 When you import on dataspace-dev you might run into errors about it not being able to mint handles. You can fix the problem like this:
 1. On dataspace-dev, edit the file `/dspace/config/dspace.cfg`
 2. Edit the section on handles so it looks like this: This will enable minting of handles in TEST mode.
+
 ```
   # We have hijacked the Handle Prefix to indicate our ARK naming assigning authority
   #  number (NAAN) instead.
@@ -63,4 +68,5 @@ When you import on dataspace-dev you might run into errors about it not being ab
   ark.ezid_password = apitest
   ark.shoulder = fk4
 ```
+
 3. Run `dsrestart` to restart DSpace, then try the import again.
