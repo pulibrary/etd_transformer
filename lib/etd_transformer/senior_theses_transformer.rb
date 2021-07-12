@@ -87,7 +87,7 @@ module EtdTransformer
       license_filename = 'LICENSE.txt'
       original_license = File.join(vs.source_files_directory, license_filename)
       destination_path = File.join(dataspace_submission.directory_path, license_filename)
-      FileUtils.cp(original_license, destination_path)
+      FileUtils.cp(original_license, destination_path) if File.exist?(original_license)
     end
 
     ##
