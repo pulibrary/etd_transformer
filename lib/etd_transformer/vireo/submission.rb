@@ -19,6 +19,7 @@ module EtdTransformer
       def initialize(asset_directory:, row:)
         @asset_directory = asset_directory
         @row = row
+        check_row_for_required_fields
         parse_row
       end
 
@@ -34,6 +35,17 @@ module EtdTransformer
         @certificate_programs = [] << @row['Certificate Program']
         @student_email = @row['Student email']
         @title = @row['Title']
+      end
+
+      def check_row_for_required_fields
+        missing_fields = []
+        REQUIRED_FIELDS.each do |required_field_name|
+          missing_fields << required_field_name if @row[required_field_name].blank?
+        end
+        return 0 if missing_fields.empty?
+
+        message = "Student ID #{@row['Student ID']} is missing required fields: #{missing_fields}"
+        raise EtdTransformer::Vireo::IncompleteSpreadsheetError, message
       end
 
       ##
