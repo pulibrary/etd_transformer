@@ -75,7 +75,7 @@ module EtdTransformer
         REQUIRED_SPREADSHEET_COLUMNS.each do |required_column_name|
           missing_columns << required_column_name unless spreadsheet_columns.include? required_column_name
         end
-        return 0 if missing_columns.empty?
+        return if missing_columns.empty?
 
         message = "Spreadsheet #{spreadsheet} is missing required columns: #{missing_columns}"
         raise EtdTransformer::Vireo::IncompleteSpreadsheetError, message

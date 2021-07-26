@@ -42,7 +42,7 @@ module EtdTransformer
         REQUIRED_FIELDS.each do |required_field_name|
           missing_fields << required_field_name if @row[required_field_name].blank?
         end
-        return 0 if missing_fields.empty?
+        return if missing_fields.empty?
 
         message = "Student ID #{@row['Student ID']} is missing required fields: #{missing_fields}"
         raise EtdTransformer::Vireo::IncompleteSpreadsheetError, message
