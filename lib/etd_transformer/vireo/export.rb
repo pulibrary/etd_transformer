@@ -9,25 +9,32 @@ require 'zip'
 
 module EtdTransformer
   module Vireo
+    REQUIRED_FIELDS = [
+      'Approval date',
+      'Department',
+      'ID',
+      'Primary document',
+      'Student email',
+      'Student ID',
+      'Student name',
+      'Status',
+      'Submission date',
+      'Thesis Type',
+      'Title'
+    ].freeze
+
+    OPTIONAL_FIELDS = [
+      'Certificate Program'
+    ].freeze
+
+    REQUIRED_SPREADSHEET_COLUMNS = [
+      REQUIRED_FIELDS + OPTIONAL_FIELDS
+    ].flatten.freeze
+
     # Senior theses as downloaded from Vireo, one department at a time. A Vireo::Export
     # contains a department, a zipfile, and a metadata spreadsheet in Excel.
     class Export
       attr_reader :department_name, :asset_directory
-
-      REQUIRED_SPREADSHEET_COLUMNS = [
-        'Approval date',
-        'Certificate Program',
-        'Department',
-        'ID',
-        'Primary document',
-        'Student email',
-        'Student ID',
-        'Student name',
-        'Status',
-        'Submission date',
-        'Thesis Type',
-        'Title'
-      ].freeze
 
       ##
       # @param [String] Full path to the input directory. Last directory must be a department name.
@@ -68,7 +75,7 @@ module EtdTransformer
         REQUIRED_SPREADSHEET_COLUMNS.each do |required_column_name|
           missing_columns << required_column_name unless spreadsheet_columns.include? required_column_name
         end
-        return 0 if missing_columns.empty?
+        return if missing_columns.empty?
 
         message = "Spreadsheet #{spreadsheet} is missing required columns: #{missing_columns}"
         raise EtdTransformer::Vireo::IncompleteSpreadsheetError, message
