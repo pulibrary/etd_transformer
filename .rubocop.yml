@@ -19,6 +19,10 @@ Metrics/BlockLength:
 
 Metrics/ClassLength:
   Enabled: false
+  
+Metrics/CyclomaticComplexity:
+  Exclude: 
+    - lib/etd_transformer/vireo/submission.rb
 
 Metrics/MethodLength:
   Exclude:

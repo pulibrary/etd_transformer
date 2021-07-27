@@ -40,12 +40,24 @@ module EtdTransformer
       def check_row_for_required_fields
         missing_fields = []
         REQUIRED_FIELDS.each do |required_field_name|
-          missing_fields << required_field_name if @row[required_field_name].blank?
+          missing_fields << required_field_name if missing?(@row[required_field_name])
         end
         return if missing_fields.empty?
 
         message = "Student ID #{@row['Student ID']} is missing required fields: #{missing_fields}"
         raise EtdTransformer::Vireo::IncompleteSpreadsheetError, message
+      end
+
+      ##
+      # Decide whether a field in the spreadsheet is missing. It is missing if it is
+      # nil, or if it is a string consisting only of whitespace.
+      def missing?(field)
+        return true if field.nil?
+        return true if field.class == Float && field.zero?
+        return false if field.class == Float && field.positive?
+        return true if field&.strip&.empty?
+
+        false
       end
 
       ##
