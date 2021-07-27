@@ -18,13 +18,13 @@ module EtdTransformer
       'Student ID',
       'Student name',
       'Status',
-      'Submission date',
       'Thesis Type',
       'Title'
     ].freeze
 
     OPTIONAL_FIELDS = [
-      'Certificate Program'
+      'Certificate Program',
+      'Submission date'
     ].freeze
 
     REQUIRED_SPREADSHEET_COLUMNS = [
