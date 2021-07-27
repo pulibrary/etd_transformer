@@ -3,6 +3,7 @@
 require 'csv'
 require 'fileutils'
 require 'shellwords'
+require 'cgi'
 
 module EtdTransformer
   ##
@@ -100,14 +101,16 @@ module EtdTransformer
     end
 
     ##
-    # Given a DSpace contents file, return an array of all bundle:CONTENT filenames
+    # Given a DSpace contents file, return an array of all bundle:CONTENT filenames.
+    # DSpace encodes diacritics as HTML entities and those must be unescaped to match
+    # the file name on disk.
     # @return [<String>] An array of all bundle:CONTENT filenames
     def list_extra_files(contents_file)
       parsed = CSV.read(contents_file, col_sep: "\t", quote_char: nil)
       extra_file_pairs = parsed.select { |a| a[1] == "bundle:CONTENT" }
       return [] unless extra_file_pairs
 
-      extra_file_pairs.map(&:first)
+      extra_file_pairs.map(&:first).map { |a| CGI.unescapeHTML(a) }
     end
 
     ##

@@ -112,6 +112,14 @@ RSpec.describe EtdTransformer::SeniorThesesTransformer do
           transformer.copy_contents(vs, ds)
           expect(File.exist?(destination_path)).to eq true
         end
+        context 'diacritics' do
+          let(:diacritics_contents_file) { "#{$fixture_path}/diacritics/contents" }
+          it 'translates to UTF8 so it can find files with diacritics on disk' do
+            extra_files = transformer.list_extra_files(diacritics_contents_file)
+            expected_file_name = "MASSIE, Katie '21_Résume de ma Thèse_FINAL.pdf"
+            expect(extra_files.first).to eq expected_file_name
+          end
+        end
       end
       context 'when there are no extra files' do
         let(:ds) { transformer.dataspace_submissions.last }
@@ -127,6 +135,7 @@ RSpec.describe EtdTransformer::SeniorThesesTransformer do
       transformer.copy_license_file(ds)
       expect(File.exist?(destination_path)).to eq true
     end
+
     it 'creates a collection import file' do
       destination_path = File.join(ds.directory_path, 'collections')
       expect(File.exist?(destination_path)).to eq false
