@@ -71,6 +71,21 @@ RSpec.describe EtdTransformer::Vireo::Submission do
       expect(submission.title).to eq "“Against the Malaise of Time”: Embodied Fragmentation and the Temporalities of the Dada Creaturely, 1919-1937"
     end
 
+    context 'missing fields come in many flavours' do
+      it "handles nil" do
+        foo = nil
+        expect(submission.missing?(foo)).to eq true
+      end
+      it "handles empty strings" do
+        foo = " "
+        expect(submission.missing?(foo)).to eq true
+      end
+      it "handles an empty float" do
+        foo = 0.to_f
+        expect(submission.missing?(foo)).to eq true
+      end
+    end
+
     context 'missing data in spreadsheet' do
       let(:submission) { described_class.new(asset_directory: ve.asset_directory, row: row) }
       let(:row) do
