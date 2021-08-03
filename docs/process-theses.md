@@ -7,6 +7,8 @@
 4. Click "Download Export" again and this time choose "DSpace Simple Archive" as the export format. Note that for large departments you might need to try several times before it works.
 5. You should now have a directory full of DSpace Simple Archive formatted export packages, and an Excel spreadsheet. Put the spreadsheet in the folder full of that department's theses.
 
+![downloaded theses example](downloaded_theses.png)
+
 ## 2. Get the embargo data from sharepoint
 Next, you'll need the spreadsheet that contains all of the embargo data. [Follow these instructions to export the data from sharepoint](https://docs.google.com/document/d/1CFCGR8ry29Xv55kPiJLoUmGxTZ5dzx2YaU83pJSLVcg/edit)
 Note that sharepoint only allows spreadsheet downloads from a Windows PC, so plan ahead for this.
@@ -16,9 +18,9 @@ Note that sharepoint only allows spreadsheet downloads from a Windows PC, so pla
 2. Invoke the script like this:
 
 ```
-% thor help etd_transformer:cli:process
+% thor help etd_transformer:cli:process_theses
 Usage:
-  thor etd_transformer:cli:process
+  thor etd_transformer:cli:process_theses
 
 Options:
   [--input=INPUT]                              # Full path to input files
@@ -33,6 +35,17 @@ Using embargo spreadsheet /Users/bess/projects/2021-theses-testing/st_restrictio
 DataSpace import collection will be 88435/dsp013n203z151
 Finished processing 9508
 Finished processing 9515
+```
+
+## 3a. Multi-author theses
+IFF the department is Mechanical and Aerospace Engineering, theses might have more than one author per work. For this department, Lynn Durgin will provide an additional spreadsheet. She will group the theses such that each thesis is only accepted once, and all of the authors of a thesis are grouped together. Add a column to the `ExcelExport.xlsx` file called `Multi Author Group` and assign each grouping a unique-within-this-spreadsheet number. See attached screenshot. 
+
+![multi author spreadsheet example](multi-author.png)
+
+Then run this task using the grouped spreadsheet and the processed theses. This will augment the theses with the additional author metadata.
+
+```
+% thor etd_transformer:cli:multi_author --spreadsheet /path/to/ExcelExportGrouped.xlsx --directory /path/to/mech_eng_processed 
 ```
 
 ## 4. Upload to DSpace

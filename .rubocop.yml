@@ -13,6 +13,7 @@ Metrics/AbcSize:
     - lib/etd_transformer/cli.rb
     - lib/etd_transformer/dataspace/submission.rb
     - lib/etd_transformer/proquest/dissertation.rb
+    - lib/etd_transformer/multi_author_augmentor.rb
 
 Metrics/BlockLength:
   Enabled: false
@@ -29,6 +30,7 @@ Metrics/MethodLength:
     - lib/etd_transformer/dataspace/submission.rb
     - lib/etd_transformer/senior_theses_transformer.rb
     - lib/etd_transformer/proquest/dissertation.rb
+    - lib/etd_transformer/multi_author_augmentor.rb
 
 Style/GlobalVars:
   Exclude:

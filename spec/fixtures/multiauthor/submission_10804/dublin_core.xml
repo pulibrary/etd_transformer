@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dublin_core schema="dc">
+
+    <!-- dc.contributor.author = Student -->
+    <dcvalue element="contributor" qualifier="author">
+        McGuinness, Noah
+    </dcvalue><dcvalue element="contributor" qualifier="author">Spilker, Nathan</dcvalue><dcvalue element="contributor" qualifier="author">Schochet, Noah</dcvalue><dcvalue element="contributor" qualifier="author">Schochet, Noah</dcvalue><dcvalue element="contributor" qualifier="author">Spilker, Nathan</dcvalue>
+
+    <!-- dc.title = Document Title -->
+        <dcvalue element="title">
+        Design, Analysis, and Flight Test of a Compact, Heavy-Lift VTOL Delivery Drone
+    </dcvalue>
+    
+    <!-- dc.description.abstract = Document Abstract -->
+        <dcvalue element="description" qualifier="abstract">
+        This thesis explores the theoretical design and analysis of a serial hybrid-electric,
+fully-autonomous, package delivery system for midrange (250-500 mi) missions and
+payloads up to 25 pounds. To improve applicability without existing infrastructure,
+the vehicle is designed to be as compact as possible, with full vertical-takeoff and
+landing (VTOL) capabilities in a hybrid fixed-wing/tri-copter configuration. The
+project covers the full breadth of the design process, including initial aircraft sizing
+methods; propulsion, powertrain and electrical design; structural design for practical
+manufacture and integration; analysis of the airframe; aerodynamic analysis for stability and control; and the development of closed loop MIMO controllers for VTOL
+and transition flight to demonstrate controllability. Further, to explore the viability
+of the tri-copter configuration and prove out the VTOL control scheme, a physical
+scale model is constructed and flight tested.
+    </dcvalue>
+    
+        <!-- dc.contributor.advisor = -->
+    <dcvalue element="contributor" qualifier="advisor">
+        Nosenchuck, Daniel
+    </dcvalue>
+    
+    <!-- dc.date.created = Submission date in "YYYY-MM-dd" format -->
+        <dcvalue element="date" qualifier="created">
+        2021-04-29
+    </dcvalue>
+    
+    <!-- dc.format.mimetype = Primary Document's mimetype, almost always "application/pdf" -->
+        <dcvalue element="format" qualifier="mimetype">
+        application/pdf
+    </dcvalue>
+    
+    <!-- dc.language.iso = Document Language -->
+        <dcvalue element="language" qualifier="iso">en</dcvalue>
+    
+    <!-- dc.type.material = "Princeton University Senior Theses" /constant-->
+    <dcvalue element="type">Princeton University Senior Theses</dcvalue>
+
+    <!-- dc.description.provenance = License Agreement Date -->
+        <dcvalue element="description" qualifier="provenance">
+        The student, Noah McGuinness, accepted the attached license on 2021-04-29 at 10:50.
+    </dcvalue>
+    
+    <!-- dc.description.provenance = Submission Date -->
+        <dcvalue element="description" qualifier="provenance">
+        The student, Noah McGuinness, submitted this thesis for approval on 2021-04-29 at 10:54.
+    </dcvalue>
+    
+    <!-- dc.description.provenance = Approval Date -->
+        <dcvalue element="description" qualifier="provenance">
+        This Senior Thesis was approved for publication on 2021-06-08 at 15:08.
+    </dcvalue>
+    
+    <!-- dc.description.provenance = Statement about when this package was generated. -->
+    <dcvalue element="description" qualifier="provenance">
+        DSpace METS Submission Ingestion Package generated from Vireo submission #10804 on 2021-08-03 at 09:53:23
+    </dcvalue>
+
+</dublin_core>

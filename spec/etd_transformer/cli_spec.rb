@@ -60,6 +60,29 @@ RSpec.describe EtdTransformer::Cli do
     end
   end
 
+  context 'process multi-author metadata with required arguments' do
+    let(:spreadsheet) { "#{$fixture_path}/multiauthor/ExcelExport.xlsx" }
+    let(:directory) { "#{$fixture_path}/multiauthor/" }
+    let(:options) do
+      {
+        spreadsheet: spreadsheet,
+        directory: directory
+      }
+    end
+
+    before do
+      allow(EtdTransformer::MultiAuthorAugmentor).to receive(:add_metadata)
+    end
+
+    it 'has an input directory' do
+      expect { cli.invoke(:multi_author, [], options) }.to output(/#{spreadsheet}/).to_stdout
+    end
+
+    it 'has an output directory' do
+      expect { cli.invoke(:multi_author, [], options) }.to output(/#{directory}/).to_stdout
+    end
+  end
+
   context 'process dissertations with required arguments' do
     let(:input_dir) { "#{$fixture_path}/proquest_dissertations" }
     let(:output_dir) { "#{$fixture_path}/cli_invoked" }

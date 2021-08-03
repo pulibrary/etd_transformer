@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dublin_core schema="pu" encoding="UTF-8">
+  <dcvalue element="date" qualifier="classyear">2021</dcvalue>
+  <dcvalue element="contributor" qualifier="authorid">920209588</dcvalue>
+  <dcvalue element="pdf" qualifier="coverpage">SeniorThesisCoverPage</dcvalue>
+  <dcvalue element="department">Mechanical and Aerospace Engineering</dcvalue>
+  <dcvalue element="mudd" qualifier="walkin">No</dcvalue>
+  <dcvalue element="certificate">Robotics &amp; Intelligent Systems Program</dcvalue>
+</dublin_core>
