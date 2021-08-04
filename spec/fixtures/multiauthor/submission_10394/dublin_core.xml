@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dublin_core schema="dc">
+
+    <!-- dc.contributor.author = Student -->
+    <dcvalue element="contributor" qualifier="author">
+        Sadalgekar, Gargi
+    </dcvalue>
+
+    <!-- dc.title = Document Title -->
+        <dcvalue element="title">
+        Decision Making and Task Allocation in a Multi-Robot System
+    </dcvalue>
+    
+    <!-- dc.description.abstract = Document Abstract -->
+        <dcvalue element="description" qualifier="abstract">
+        We investigate several methods of explore-exploit decision making for the appli-cation of trash collection.  To do this, we explore the optimization of the multi-agentMulti-Armed Bandit (MAMAB) problem using the UCB1 algorithm.  We considercases of inter-agent message passing and no message passing, as well as several re-ward distributions.  We show that for fixed initial and constant rate addition rewarddistributions, performance improves as the degree of communication increases.  Wealso show that beyond a certain degree of communication, there is negligible improve-ment in system performance.  We develop a novel simulator for MAMAB problems toverify our theoretical results.  We demonstrate that our adaptation of UCB1 achievescumulative regret logarithmically with time, and is a valid approach to the trash col-lection problem.
+    </dcvalue>
+    
+        <!-- dc.contributor.advisor = -->
+    <dcvalue element="contributor" qualifier="advisor">
+        Leonard, Naomi
+    </dcvalue>
+    
+    <!-- dc.date.created = Submission date in "YYYY-MM-dd" format -->
+        <dcvalue element="date" qualifier="created">
+        2021-04-28
+    </dcvalue>
+    
+    <!-- dc.format.mimetype = Primary Document's mimetype, almost always "application/pdf" -->
+        <dcvalue element="format" qualifier="mimetype">
+        application/pdf
+    </dcvalue>
+    
+    <!-- dc.language.iso = Document Language -->
+        <dcvalue element="language" qualifier="iso">en</dcvalue>
+    
+    <!-- dc.type.material = "Princeton University Senior Theses" /constant-->
+    <dcvalue element="type">Princeton University Senior Theses</dcvalue>
+
+    <!-- dc.description.provenance = License Agreement Date -->
+        <dcvalue element="description" qualifier="provenance">
+        The student, Gargi Sadalgekar, accepted the attached license on 2021-04-28 at 13:55.
+    </dcvalue>
+    
+    <!-- dc.description.provenance = Submission Date -->
+        <dcvalue element="description" qualifier="provenance">
+        The student, Gargi Sadalgekar, submitted this thesis for approval on 2021-04-28 at 13:57.
+    </dcvalue>
+    
+    <!-- dc.description.provenance = Approval Date -->
+        <dcvalue element="description" qualifier="provenance">
+        This Senior Thesis was approved for publication on 2021-06-08 at 15:14.
+    </dcvalue>
+    
+    <!-- dc.description.provenance = Statement about when this package was generated. -->
+    <dcvalue element="description" qualifier="provenance">
+        DSpace METS Submission Ingestion Package generated from Vireo submission #10394 on 2021-08-03 at 09:53:14
+    </dcvalue>
+
+</dublin_core>

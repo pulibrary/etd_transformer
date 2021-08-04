@@ -23,6 +23,21 @@ module EtdTransformer
       puts "\n\nERROR: #{e.message}"
     end
 
+    option :spreadsheet, desc: 'Full path to spreadsheet with multiauthor metadata', alias: 's'
+    option :directory, desc: 'Full path to already processed senior theses', alias: 'd'
+    desc 'multi_author', 'Add additional author metadata to processed DataSpace ETDs'
+    def multi_author
+      if all_required_multi_author_options_present?
+        puts "Using spreadsheet #{options[:spreadsheet]}."
+        puts "Adding additional author metadata to #{options[:directory]}"
+        EtdTransformer::MultiAuthorAugmentor.add_metadata(options)
+      else
+        output_help_message
+      end
+    rescue EtdTransformer::Vireo::IncompleteSpreadsheetError => e
+      puts "\n\nERROR: #{e.message}"
+    end
+
     option :input, desc: 'Full path to input files', alias: 'i'
     option :output, desc: 'Full path to output', alias: 'o'
     desc 'process_dissertations', 'Process proquest ETDs into DataSpace ETDs'
@@ -52,6 +67,10 @@ module EtdTransformer
         puts "Output will be written to #{options[:output]}"
         puts "Using embargo spreadsheet #{options[:embargo_spreadsheet]}" if options[:embargo_spreadsheet]
         puts "DataSpace import collection will be #{options[:collection_handle]}" if options[:collection_handle]
+      end
+
+      def all_required_multi_author_options_present?
+        true if options[:spreadsheet] && options[:directory]
       end
 
       def all_required_thesis_options_present?
