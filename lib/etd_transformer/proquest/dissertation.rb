@@ -6,6 +6,7 @@ module EtdTransformer
     # A single Proquest dissertation
     class Dissertation
       attr_reader :zipfile
+      attr_writer :department
 
       def initialize(zipfile)
         @zipfile = zipfile
@@ -194,7 +195,7 @@ module EtdTransformer
       ##
       # Get the department from the XML
       def department
-        metadata.xpath('//DISS_submission//DISS_institution//DISS_inst_contact').text
+        @department ||= metadata.xpath('//DISS_submission//DISS_institution//DISS_inst_contact').text
       end
 
       ##
@@ -217,7 +218,10 @@ module EtdTransformer
       # Map the department to the handle
       def handle
         mapper = EtdTransformer::Proquest::CollectionMapper.new.mapper
-        mapper[department]
+        department_handle = mapper[department]
+        raise "Unknown department: #{department}" if department_handle.nil?
+
+        department_handle
       end
 
       ##
