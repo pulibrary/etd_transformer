@@ -81,6 +81,11 @@ RSpec.describe EtdTransformer::Proquest::Dissertation do
       expect(pd.handle).to eq handle
     end
 
+    it "raises a helpful error if it cannot map the department to a handle" do
+      pd.department = "Fake Department"
+      expect { pd.handle }.to raise_error(RuntimeError, /Unknown department/)
+    end
+
     context "keywords" do
       let(:zipfile) { "#{$fixture_path}/proquest_dissertations/etdadmin_upload_796867.zip" }
       let(:expected_keywords) do
