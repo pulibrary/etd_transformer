@@ -199,12 +199,16 @@ module EtdTransformer
     end
 
     ##
-    # The titles contain extra data that will make them harder to match on. They need cleaning.
+    # The titles contain extra data that will make them harder to match on.
+    # They need cleaning.
     # Downcase, strip whitespace and punctuation.
+    # Truncate at 50 characters because the very long theses titles are more
+    # likely to diverge between ThesisCentral and the Embargo Spreadsheet.
     def normalize_title(title)
       newtitle = title.downcase
       newtitle = newtitle.split(' - ').first.strip
-      newtitle.gsub(/[^a-zA-Z\s\d]/, '')
+      newtitle = newtitle.gsub(/[^a-zA-Z\s\d]/, '')
+      newtitle[0, 50]
     end
 
     ##

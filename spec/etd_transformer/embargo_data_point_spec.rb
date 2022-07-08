@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe EtdTransformer::EmbargoDataPoint do
+  let(:restriction_status) { "Walk-In Only" }
   let(:spreadsheet_row) do
     {
       "Name" => "This is a fake creative writing thesis - Janice Cheon.xml",
@@ -12,7 +13,7 @@ RSpec.describe EtdTransformer::EmbargoDataPoint do
       "Adviser Comments Status" => "N/A", "Adviser Comments" => nil,
       "ODOCReview" => "Approved",
       "Confirmation Sent" => "Yes", "Approval Notification Sent" => "Yes",
-      "Mudd Status" => "Pending", "Request Type" => "Walk-In Only",
+      "Mudd Status" => "Pending", "Request Type" => restriction_status,
       "Notify Faculty Adviser" => nil, "Thesis Uploaded" => "No",
       "Check Thesis Uploaded" => "1", "SetFormLink" => nil,
       "Item Type" => "Item", "Path" => "our/strar/Requests"
@@ -20,16 +21,25 @@ RSpec.describe EtdTransformer::EmbargoDataPoint do
   end
   let(:embargo_data_point) { described_class.new(spreadsheet_row) }
 
-  it 'has the netid' do
-    expect(embargo_data_point.netid).to eq 'jcheon'
+  context "Request Type: Walk-In Only" do
+    it 'has the netid' do
+      expect(embargo_data_point.netid).to eq 'jcheon'
+    end
+    it 'has the title' do
+      expect(embargo_data_point.title).to eq spreadsheet_row["Name"]
+    end
+    it 'has the walk in access' do
+      expect(embargo_data_point.walk_in_access).to eq 'Yes'
+    end
+    it 'has the embargo years' do
+      expect(embargo_data_point.years).to eq '5'
+    end
   end
-  it 'has the title' do
-    expect(embargo_data_point.title).to eq spreadsheet_row["Name"]
-  end
-  it 'has the walk in access' do
-    expect(embargo_data_point.walk_in_access).to eq 'Yes'
-  end
-  it 'has the embargo years' do
-    expect(embargo_data_point.years).to eq '5'
+
+  context "Request Type: Embargo + Walk-In" do
+    let(:restriction_status) { "Embargo + Walk-In" }
+    it 'has the walk in access' do
+      expect(embargo_data_point.walk_in_access).to eq 'Yes'
+    end
   end
 end
