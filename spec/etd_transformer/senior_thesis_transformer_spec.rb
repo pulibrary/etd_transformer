@@ -161,10 +161,12 @@ RSpec.describe EtdTransformer::SeniorThesesTransformer do
 
   # The titles as written in the embargo spreadsheet contain extra data that will
   # make them harder to match on. They need cleaning.
+  # They should also truncate to 50 characters because very long titles are more
+  # likely to have diverged.
   context 'title matching' do
     it 'eliminates capitalization, punctuation, and extra data' do
       original_title = '“THE WAY OUT”_ A Contemporary Portrait of 1.5 and Second Generation Immigrants from New York City’s  - Sanna Lee.xml'
-      normalized_title = 'the way out a contemporary portrait of 15 and second generation immigrants from new york citys'
+      normalized_title = 'the way out a contemporary portrait of 15 and seco'
       expect(transformer.normalize_title(original_title)).to eq normalized_title
     end
     it 'determines whether two strings match using Levenshtein distance' do
@@ -173,6 +175,11 @@ RSpec.describe EtdTransformer::SeniorThesesTransformer do
       expect(transformer.match?(title1, title2)).to eq true
       title2 = "a totally different title"
       expect(transformer.match?(title1, title2)).to eq false
+    end
+    it "matches very long titles" do
+      title1 = "Breaking the Species Barrier_ Investigating the Host Proteins Involved in Human and Murine Hepatitis - Mansi Totwani.xml"
+      title2 = "Breaking the Species Barrier: Investigating the Host Proteins Involved in Human and Murine Hepatitis B Infection"
+      expect(transformer.match?(title1, title2)).to eq true
     end
   end
 
